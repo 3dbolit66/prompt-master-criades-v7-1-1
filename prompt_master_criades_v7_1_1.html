@@ -1,0 +1,1215 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prompt Master Criades V7.1.1</title>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#183c35">
+<style>
+:root{--bg:#f1eee8;--p:#fffdf9;--ink:#24221f;--mut:#716b63;--line:#d8d0c5;--brand:#183c35;--accent:#9b7a5c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+header{position:sticky;top:0;z-index:9;background:#f1eee8ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.head{max-width:1480px;margin:auto;padding:17px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+h1{margin:0;font:500 clamp(25px,3vw,39px) Georgia,serif;color:var(--brand)}.sub{font-size:12px;color:var(--mut);margin-top:4px}.badge{background:var(--brand);color:white;padding:8px 11px;border-radius:999px;font-size:11px;font-weight:800}
+main{max-width:1480px;margin:auto;padding:18px 20px 60px}.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(370px,.85fr);gap:16px;align-items:start}
+@media(max-width:980px){.layout{grid-template-columns:1fr}.out{position:static!important}}
+.sections{display:grid;gap:13px}section,.out{background:var(--p);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 4px 16px #0000000b}
+h2{margin:0;padding:14px 16px;font:500 19px Georgia,serif;color:var(--brand);background:#faf7f2;border-bottom:1px solid var(--line)}
+.content{padding:14px 16px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:11px}
+label{display:grid;gap:5px;font-size:12px;font-weight:750;color:#504a43}select,input,textarea{width:100%;border:1px solid #cec5b9;border-radius:10px;background:white;padding:10px;font:inherit;color:var(--ink)}
+select:focus,input:focus,textarea:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 3px #183c3518}.note{font-size:12px;color:var(--mut);line-height:1.45;margin:10px 0 0}
+.lock{border-left:4px solid var(--accent);background:#f7f1e9;padding:10px 12px;border-radius:8px;font-size:12px;line-height:1.45;margin-top:11px}
+.out{position:sticky;top:92px}.outhead{padding:13px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.outtitle{font:500 20px Georgia,serif;color:var(--brand)}.buttons{display:flex;gap:6px;flex-wrap:wrap}button{border:0;border-radius:999px;padding:9px 12px;font-size:12px;font-weight:800;background:var(--brand);color:white;cursor:pointer}
+button.alt{background:var(--accent)}button.ghost{background:white;color:var(--brand);border:1px solid var(--line)}button.danger{background:#8c3d31}
+#output{min-height:690px;border:0;border-radius:0;resize:vertical;padding:15px;line-height:1.48}.status{padding:9px 14px;border-top:1px solid var(--line);background:#faf7f2;color:var(--mut);font-size:12px}
+.presetbar{display:grid;grid-template-columns:minmax(150px,1fr) minmax(190px,1.25fr);gap:10px}
+.presetactions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.presetactions button{border-radius:10px}
+.smallnote{font-size:11px;color:var(--mut);line-height:1.4;margin-top:8px}
+@media(max-width:640px){.presetbar{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<header><div class="head"><div><h1>Prompt Master Criades V7.1.1</h1><div class="sub">Casa Ribalta · generador visual + creador de textos bilingües per tipus</div></div><div class="badge">GITHUB READY</div></div></header>
+<main><div class="layout"><div class="sections">
+
+<section><h2>1. Identitat</h2><div class="content"><div class="grid">
+<label>Nom<input id="name" placeholder="Milagros"></label>
+<label>Edat<input id="age" type="number" min="18" max="90" value="45"></label>
+<label>Pentinat<select id="hair">
+<option value="reference">Conservar referència</option>
+<option value="loose">Cabell solt</option>
+<option value="low_ponytail">Cua baixa</option>
+<option value="mid_ponytail">Cua mitjana</option>
+<option value="high_ponytail">Cua alta</option>
+<option value="low_bun">Monyo baix</option>
+<option value="mid_bun">Monyo mitjà</option>
+<option value="high_bun">Monyo alt</option>
+<option value="formal_chignon">Chignon / recollit formal</option>
+<option value="braid">Trena</option>
+<option value="claw_clip">Recollit amb pinça</option>
+<option value="short_bob">Bob / cabell curt</option>
+<option value="pixie">Pixie</option>
+</select></label><label>Cofia / Headwear<select id="headwear">
+<option value="none" selected>Sense cofia</option>
+<option value="kitchen_mesh">Cuina · reixeta integral transpirable</option>
+<option value="formal_clean">Servei formal · llisa</option>
+<option value="formal_trim">Servei formal · tradicional amb ribet</option>
+</select></label>
+<label>Expressió<select id="expression"><option value="neutral professional expression">Neutra</option><option value="focused expression">Concentrada</option><option value="attentive restrained expression">Atenta</option><option value="calm subtle smile">Somriure subtil</option><option value="serious reserved expression">Seriosa</option></select></label>
+<label>Mirada<select id="gaze"><option value="looking at the task">A la tasca</option><option value="looking down">Cap avall</option><option value="looking at an object in her hands">A un objecte</option><option value="looking off frame">Fora de camp</option><option value="looking at camera">A càmera</option></select></label>
+<label>Ulleres<select id="glasses">
+<option value="none" selected>Sense ulleres</option>
+<option value="reference">Conservar només si són visibles a la referència</option>
+<option value="thin">Afegir ulleres fines discretes</option>
+</select></label>
+<label>Maquillatge<select id="makeup"><option value="no makeup">Sense maquillatge</option><option value="minimal practical makeup">Mínim</option></select></label>
+<label>Joies<select id="jewelry"><option value="none">Cap</option><option value="small pearl earrings">Perles petites</option><option value="small gold hoop earrings">Aros petits</option><option value="simple wedding band only">Aliança</option></select></label>
+</div><p class="note"><b>Regla absoluta:</b> el rostre sempre depèn de la imatge que s’adjunti al generador. No existeix cap rostre per defecte.</p><div id="hairHeadwearStatus" class="lock" style="display:none"></div></div></section>
+
+<section><h2>2. Perfil corporal</h2><div class="content"><div class="grid">
+<label>Alçada cm<input id="height" type="number" value="165"></label><label>Pes kg<input id="weight" type="number" step=".5" value="65"></label>
+<label>Talla uniforme<select id="size"><option value="34">34</option><option value="36">36</option><option value="38">38</option><option value="40">40</option><option value="42">42</option><option value="44">44</option><option value="46">46</option><option value="48">48</option><option value="50">50</option><option value="52">52</option><option value="54">54</option><option value="56">56</option></select></label>
+<label>Constitució<select id="build"><option value="very slim">Molt prima</option><option value="slim">Prima</option><option value="normal" selected>Normal</option><option value="sturdy">Robusta</option><option value="corpulent">Corpulenta</option><option value="slight visible overweight">Lleuger sobrepès</option><option value="visible overweight">Sobrepès visible</option><option value="obese">Obesa</option></select></label>
+<label>Forma<select id="shape"><option value="hourglass">Rellotge de sorra</option><option value="pear">Pera</option><option value="apple">Poma</option><option value="rectangle" selected>Rectangle</option><option value="inverted triangle">Triangle invertit</option><option value="oval">Ovalada</option></select></label>
+<label>Pit cm<input id="bust" type="number" value="90"></label><label>Cintura cm<input id="waist" type="number" value="75"></label><label>Maluc cm<input id="hips" type="number" value="98"></label>
+<label>Ajust<select id="fit"><option value="slightly loose">Lleugerament ample</option><option value="normal" selected>Normal</option><option value="comfortably fitted">Còmode entallat</option><option value="slightly fitted">Lleugerament ajustat</option></select></label>
+</div></div></section>
+
+<section><h2>3. Uniforme</h2><div class="content"><div class="grid">
+<label>Fitxa mestra<select id="uniform"><option value="A">A · Treball + mig davantal</option><option value="B">B · Treball + pitet blanc</option><option value="BC">B coordinat · Pitet mateix teixit</option><option value="C">C · Servei formal</option><option value="D">D · Estil Italià · Super Lock</option></select></label><label>Màniga<select id="sleeveLength">
+<option value="canonical" selected>Segons uniforme</option>
+<option value="short">Curta</option>
+<option value="three_quarter">3/4</option>
+<option value="long">Llarga</option>
+</select></label>
+<label>Color vestit<select id="color"><option value="sage green">Sage green</option><option value="dusty blue">Dusty blue</option><option value="dusty rose">Dusty rose</option><option value="warm taupe">Warm taupe</option><option value="navy blue">Navy</option><option value="charcoal grey">Charcoal</option><option value="dusty teal">Dusty teal</option><option value="burgundy">Burgundy</option><option value="chocolate brown">Chocolate</option><option value="lavender grey">Lavender grey</option></select></label>
+<label>Teixit<select id="fabric"><option value="regular vertical pinstripe: each colored stripe approximately 2 mm wide, each white gap approximately 2 mm wide, perfectly constant rhythm, matte cotton-polyester blend">Ratlla italiana regular 2+2 mm</option><option value="fine 1–2 mm vertical micro-stripe, matte cotton-polyester blend">Micro-ratlla fina 1–2 mm</option><option value="small gingham check, matte cotton blend">Vichy petit</option><option value="fine tattersall check">Tattersall fi</option><option value="solid matte cotton-poplin fabric">Llis cotó popelín</option><option value="solid matte cotton twill">Llis cotó twill</option><option value="fine matte herringbone">Espiga fina</option><option value="service matte satin: smooth dense satin weave with a restrained low soft sheen, subtle directional highlights only on folds, never glossy, never mirror-like, never plastic, with enough body for a structured domestic-service dress">Servei — Satén mate</option><option value="service ras satin: very smooth tightly woven satin surface with a clearly visible elegant continuous lustre, stronger and cleaner highlights than matte satin, fluid but with controlled body, never wet-looking, metallic, vinyl or plastic">Servei — Ras (satén)</option><option value="service satin faille: refined satin-faced faille with subtle fine transverse ribs, soft controlled sheen concentrated on raised ribs and folds, structured drape, never glossy costume satin">Servei — Faille satinada</option></select></label>
+<label>Color bandes / viu<select id="trim"><option value="pure white">Blanc pur</option><option value="ivory white">Ivori</option><option value="same color as the dress">Mateix color</option><option value="navy blue">Navy</option><option value="dusty rose">Dusty rose</option><option value="sage green">Sage green</option></select></label>
+<label>Estat vestit<select id="dressState">
+<option value="WL0_NEW">WL0 · Nou / estrena</option>
+<option value="WL1_CARED">WL1 · Molt cuidat</option>
+<option value="WL2_NORMAL" selected>WL2 · Jornada normal</option>
+<option value="WL3_USED">WL3 · Molt usat / gastat</option>
+<option value="WL4_DIRTY">WL4 · Brut de feina</option>
+<option value="WL5_STAINED">WL5 · Tacat visible</option>
+<option value="WL6_WET">WL6 · Humit / mullat</option>
+<option value="WL7_INTENSE">WL7 · Tasca intensa: usat + brut + humit</option>
+</select></label>
+<label>Estat davantal<select id="apronState">
+<option value="AL0_NEW">AL0 · Nou / estrena</option>
+<option value="AL1_CARED">AL1 · Molt cuidat</option>
+<option value="AL2_NORMAL" selected>AL2 · Jornada normal</option>
+<option value="AL3_USED">AL3 · Molt usat / gastat</option>
+<option value="AL4_DIRTY">AL4 · Brut de feina</option>
+<option value="AL5_STAINED">AL5 · Tacat visible</option>
+<option value="AL6_WET">AL6 · Humit / mullat</option>
+<option value="AL7_INTENSE">AL7 · Tasca intensa: usat + brut + humit</option>
+</select></label>
+<label>Calçat<select id="shoes"><option value="white canvas ballerina work shoes with a closed rounded toe and a low continuous 3–4 cm wedge">Ballerina loneta blanca · cunya 3–4 cm</option><option value="canvas ballerina work shoes in a solid color coordinated with the dress, closed rounded toe and low continuous 3–4 cm wedge">Ballerina loneta coordinada · cunya 3–4 cm</option><option value="white closed domestic-service slip-on shoes with a low continuous wedge">Slip-on blanc cunya baixa</option><option value="white closed flat domestic-service shoes">Blanca plana</option><option value="black closed low-heel service pumps">Negra taló baix</option><option value="black closed flat service shoes">Negra plana</option></select></label>
+<label>Estat calçat<select id="shoeState">
+<option value="SL0_NEW">SL0 · Nou / impecable</option>
+<option value="SL1_CARED">SL1 · Cuidat, poc usat</option>
+<option value="SL2_DAILY" selected>SL2 · Ús diari visible</option>
+<option value="SL3_WORN">SL3 · Bastant usat</option>
+<option value="SL4_DIRTY">SL4 · Brut de feina</option>
+<option value="SL5_WET">SL5 · Humit / mullat</option>
+</select></label>
+<label>Mitges<select id="stockings"><option value="no stockings, natural bare legs">Sense mitges</option><option value="nude 8 denier matte stockings">Nude 8 den mat</option><option value="nude 10 denier matte stockings">Nude 10 den mat</option><option value="nude 15 denier semi-matte stockings">Nude 15 den semimat</option><option value="nude 20 denier semi-matte stockings">Nude 20 den semimat</option><option value="nude 40 denier matte stockings">Nude 40 den mat</option><option value="smoke grey 15 denier semi-transparent stockings">Gris fum 15 den</option><option value="smoke grey 20 denier semi-transparent stockings">Gris fum 20 den</option><option value="black 15 denier semi-transparent stockings">Negres 15 den</option><option value="black 20 denier semi-transparent stockings">Negres 20 den</option><option value="black 40 denier matte tights">Negres 40 den</option><option value="black 60 denier opaque tights">Negres 60 den</option><option value="black opaque tights">Negres opaques</option><option value="white 20 denier matte stockings">Blanques 20 den</option><option value="white opaque tights">Blanques opaques</option></select></label>
+</div><div class="lock">Els colors són variables. La fitxa bloqueja el patró. En el <b>B coordinat</b>, pitet, tirants, cinturilla, faldó i llaç són del mateix teixit del vestit; només són blanques la banda del pitet i les bandes de les dues butxaques.</div><div id="sleeveStatus" class="lock" style="margin-top:8px"></div></div></section>
+
+<section><h2>4. Escena</h2><div class="content"><div class="grid">
+<label>Localització<select id="location"></select></label><label>Activitat<select id="activity"></select></label>
+<label>Postura<select id="posture">
+<option value="automatic">Automàtica segons activitat</option>
+<option value="classic_attention" selected>Dreta · mans agafades davant del davantal</option>
+<option value="discreet_courtesy_bow">Reverència discreta · gairebé imperceptible</option>
+<option value="standing_working">Dreta treballant</option>
+<option value="walking">Caminant</option>
+<option value="crouching">Ajupida</option>
+<option value="kneeling">Agenollada</option>
+<option value="tiptoe">De puntetes</option>
+<option value="seated">Asseguda</option>
+<option value="bending">Inclinada</option>
+<option value="carrying">Transportant pes</option>
+<option value="partial_back">Esquena parcial</option>
+</select></label>
+<label>Altres presents<select id="presence"><option value="no other people visible">Ningú</option><option value="the lady of the house is naturally visible">La senyora</option><option value="one other housemaid in the background">Una altra minyona</option><option value="Coco and Lola, two Maltese dogs, are present">Coco i Lola</option></select></label>
+</div></div></section>
+
+<section><h2>5. Càmera i estil</h2><div class="content"><div class="grid">
+<label>Pla<select id="shot"><option value="full-body long shot">Cos sencer</option><option value="medium-long shot">Pla americà</option><option value="medium shot">Pla mitjà</option><option value="medium close-up">Primer pla mitjà</option><option value="close-up portrait">Primer pla</option></select></label>
+<label>Format<select id="format"><option value="portrait 4:5">4:5</option><option value="portrait 2:3">2:3</option><option value="portrait 3:4">3:4</option><option value="vertical 9:16">9:16</option><option value="square 1:1">1:1</option><option value="horizontal 3:2">3:2</option><option value="cinematic 16:9">16:9</option></select></label>
+<label>Angle<select id="angle"><option value="eye-level camera">Ulls</option><option value="slightly high camera angle">Picat lleu</option><option value="slightly low camera angle">Contrapicat lleu</option><option value="three-quarter camera angle">Tres quarts</option><option value="side profile camera angle">Perfil</option><option value="rear camera angle">Posterior</option></select></label>
+<label>Òptica<select id="lens"><option value="50 mm natural perspective">50 mm</option><option value="35 mm environmental perspective">35 mm</option><option value="85 mm portrait compression">85 mm</option></select></label>
+<label>Llum<select id="light"><option value="soft natural morning light">Matí natural</option><option value="soft diffused interior daylight">Interior difusa</option><option value="warm late-afternoon light">Tarda càlida</option><option value="neutral professional studio lighting">Estudi neutre</option><option value="warm restrained evening lamp light">Nit interior</option></select></label>
+<label>Estil<select id="style">
+<option value="photo" selected>Fotografia realista</option>
+<option value="direct_flash">Fotografia · Direct Flash</option>
+<option value="clean_character">Clean Fashion Character Illustration</option>
+<option value="soft_editorial">Soft Editorial Fashion Painting</option>
+<option value="lookbook">Polished Fashion Lookbook Illustration</option>
+<option value="dark_outline">Refined Dark-Outline Editorial Illustration</option>
+<option value="coloring_book">Coloring Book · Black Line on White</option>
+<option value="catalog">Catàleg uniforme</option>
+<option value="sheet">Fitxa tècnica visual</option>
+<option value="flat">Dibuix tècnic pla</option>
+<option value="ghost">Ghost mannequin</option>
+<option value="character">Character sheet</option>
+</select></label>
+<label>Composició<select id="composition"><option value="natural composition inside the selected location">Natural</option><option value="centered catalog composition">Centrada</option><option value="clean white studio background">Fons blanc</option><option value="warm light beige editorial background">Fons beix editorial</option><option value="framed naturally through a doorway">Marc de porta</option></select></label>
+<label>Variació composició<select id="compositionVariation"><option value="conservative">Conservadora</option><option value="natural" selected>Natural</option><option value="high">Alta</option></select></label>
+<label>Orientació corporal<select id="bodyOrientation"><option value="auto" selected>Automàtica segons tasca</option><option value="front">Frontal</option><option value="three_quarter_left">3/4 esquerra</option><option value="three_quarter_right">3/4 dreta</option><option value="left_profile">Perfil esquerre</option><option value="right_profile">Perfil dret</option><option value="partial_rear">Esquena parcial</option></select></label>
+<label>Prioritat<select id="priority"><option value="balanced">Equilibrada</option><option value="uniform">Uniforme màxima</option><option value="identity">Identitat màxima</option><option value="scene">Escena màxima</option></select></label>
+</div></div></section>
+
+</div>
+<section><h2>6. Creador de text bilingüe</h2><div class="content"><div class="grid">
+<label>Text<select id="narrativeEnabled"><option value="yes" selected>Activat · ES + EN</option><option value="no">Desactivat</option></select></label>
+<label>Tipus de text<select id="textType"><option value="narrative" selected>Narratiu · microescena</option><option value="descriptive">Descriptiu · atmosfera i detall</option><option value="documentary">Documental · observació social</option><option value="uniform_ad">Anunci / catàleg d’uniformes</option><option value="dialogue">Diàleg · escena conversada</option><option value="reflection">Reflexió interior</option><option value="anecdote">Anècdota domèstica</option><option value="professional">Crònica professional del servei</option><option value="editorial">Text editorial / revista</option></select></label>
+<label>Extensió<select id="narrativeLength"><option value="100">≈100 paraules / words</option><option value="150">≈150 paraules / words</option><option value="200" selected>≈200 paraules / words</option><option value="250">≈250 paraules / words</option><option value="300">≈300 paraules / words</option></select></label>
+<label>Contingut / angle<select id="narrativeMode"><option value="auto" selected>Automàtic segons escena</option><option value="thoughts">Pensaments de la minyona</option><option value="lady_dialogue">Relació / diàleg amb la senyora</option><option value="maid_dialogue">Relació / diàleg amb una altra minyona</option><option value="anecdote">Petita anècdota domèstica</option><option value="work_conflict">Petit conflicte laboral/domèstic</option><option value="routine">Rutina i detall professional</option><option value="uniform_focus">Uniforme, teixit i funcionalitat</option><option value="hierarchy">Jerarquia i relació de classe</option></select></label>
+<label>To<select id="textTone"><option value="natural" selected>Natural i concret</option><option value="warm">Càlid</option><option value="restrained">Contingut / sobri</option><option value="ironic">Ironia subtil</option><option value="intimate">Íntim</option><option value="formal">Formal</option><option value="commercial">Comercial elegant</option></select></label>
+<label>Punt de vista<select id="narrativePOV"><option value="third" selected>Tercera persona</option><option value="first">Primera persona</option><option value="neutral">Veu neutra / impersonal</option></select></label>
+</div><p class="note"><b>Sortida bilingüe:</b> el generador prepara una instrucció completa perquè el text final es produeixi simultàniament en castellà i anglès. Les dues versions han de conservar exactament els mateixos fets i contingut. El tipus de text pot ser literari, documental, comercial, dialogat o professional.</p></div></section>
+
+<section><h2>7. Presets</h2><div class="content">
+<div class="presetbar">
+<label>Nom del preset<input id="presetName" placeholder="Ex.: Mónica · bugaderia · Uniforme B"></label>
+<label>Presets guardats<select id="presetSelect"><option value="">— Cap preset seleccionat —</option></select></label>
+</div>
+<div class="presetactions">
+<button id="savePreset" type="button">Guardar preset</button>
+<button id="loadPreset" type="button" class="alt">Carregar</button>
+<button id="updatePreset" type="button" class="ghost">Actualitzar</button>
+<button id="deletePreset" type="button" class="danger">Eliminar</button>
+<button id="exportPresets" type="button" class="ghost">Exportar JSON</button>
+<button id="importPresets" type="button" class="ghost">Importar JSON</button>
+<input id="presetFile" type="file" accept="application/json" hidden>
+</div>
+<div class="smallnote">Els presets es guarden al navegador mitjançant localStorage. L’exportació JSON permet fer còpia de seguretat o moure’ls a un altre dispositiu.</div>
+</div></section>
+
+<aside class="out"><div class="outhead"><div class="outtitle">Prompts finals</div><div class="buttons"><button id="generate">Generar</button><button class="alt" id="randomScene">Random escena</button><button class="ghost" id="randomLook">Random look</button><button class="ghost" id="copy">Copiar imatge</button><button class="ghost" id="copyNarrative">Copiar text ES + EN</button><button class="ghost" id="copyAll">Copiar tot</button><button class="ghost" id="txt">TXT</button><button class="danger" id="reset">Reiniciar</button></div></div><div class="smallnote" style="padding:10px 15px 0"><b>PROMPT D’IMATGE</b></div><textarea id="output"></textarea><div class="smallnote" style="padding:10px 15px 0"><b>TEXT GENERAT · ESPAÑOL + ENGLISH</b></div><textarea id="narrativeOutput" style="min-height:430px"></textarea><div class="status" id="status">Preparat. Prem Generar per crear el prompt d’imatge i el text bilingüe.</div></aside></div></main>
+
+<script>
+"use strict";
+const ACTIVITIES={"dining_room":[{"v":"setting the dining table","t":"Poner la mesa del comedor"},{"v":"clearing the dining table","t":"Recoger la mesa del comedor"},{"v":"polishing silverware","t":"Pulir la cubertería de plata"},{"v":"arranging crystal glasses","t":"Colocar copas de cristal"},{"v":"folding linen napkins","t":"Doblar servilletas de lino"},{"v":"replacing floral centerpieces","t":"Cambiar centros florales"},{"v":"checking table alignment","t":"Comprobar la alineación de la mesa"},{"v":"preparing room before guests arrive","t":"Preparar el comedor antes de la llegada de invitados"},{"v":"serving afternoon tea","t":"Servir el té de la tarde"},{"v":"collecting dishes after service","t":"Recoger platos después del servicio"},{"v":"lighting candles","t":"Encender velas"},{"v":"serving dishes from kitchen","t":"Servir platos desde la cocina al comedor"},{"v":"offering wine during meal","t":"Ofrecer vino durante la comida"},{"v":"offering water during meal","t":"Ofrecer agua durante la comida"},{"v":"offering bread during meal","t":"Ofrecer pan durante la comida"},{"v":"unloading dirty dishes to kitchen","t":"Llevar la vajilla sucia a la cocina"},{"v":"laying out tablecloths","t":"Extender manteles limpios y sin arrugas"},{"v":"shaking used tablecloths","t":"Sacudir y retirar manteles usados"},{"v":"standing in corner while family eat","t":"Permanecer de pie en un rincón mientras come la familia"},{"v":"checking chair placement","t":"Comprobar la colocación de las sillas"}],"living_room":[{"v":"arranging flowers","t":"Arreglar flores"},{"v":"dusting furniture","t":"Quitar polvo de los muebles"},{"v":"straightening cushions","t":"Enderezar cojines"},{"v":"organizing magazines","t":"Ordenar revistas"},{"v":"polishing brass handles","t":"Pulir tiradores de latón"},{"v":"cleaning glass surfaces","t":"Limpiar superficies de cristal"},{"v":"preparing room before guests arrive","t":"Preparar el salón antes de invitados"},{"v":"collecting used cups and saucers","t":"Recoger tazas y platillos usados"},{"v":"opening curtains","t":"Abrir cortinas"},{"v":"closing curtains","t":"Cerrar cortinas"},{"v":"vacuuming rugs","t":"Aspirar alfombras"},{"v":"vacuuming upholstery","t":"Aspirar tapicerías de sofás, butacas y cortinas"},{"v":"polishing wood","t":"Pulir madera"},{"v":"polishing marble","t":"Pulir mármol"},{"v":"mopping floor","t":"Fregar el suelo"},{"v":"removing ashes from fireplace","t":"Retirar cenizas de la chimenea"},{"v":"cleaning the hearth","t":"Limpiar el hogar de la chimenea"},{"v":"replenishing dry firewood","t":"Reponer leña seca"},{"v":"opening windows to refresh air","t":"Abrir ventanas para renovar el aire sin enfriar la estancia"},{"v":"turning on lamps at dusk","t":"Encender luces ambientales y lámparas al anochecer"},{"v":"turning on fireplace before arrival","t":"Encender la chimenea antes de que lleguen residentes o visitas"},{"v":"placing liquor cart or ice bucket","t":"Colocar carrito de licores o cubitera"},{"v":"emptying ashtrays","t":"Vaciar y limpiar ceniceros"},{"v":"emptying decorative wastebaskets","t":"Vaciar papeleras decorativas"},{"v":"taking used cups to kitchen","t":"Llevar tazas, vasos o platos usados a la cocina"},{"v":"cleaning light switches","t":"Limpiar interruptores"},{"v":"watering indoor plants","t":"Regar plantas de interior"},{"v":"changing flower water","t":"Cambiar el agua de las flores"},{"v":"refreshing decorative arrangements","t":"Refrescar arreglos decorativos"}],"kitchen":[{"v":"prepare breakfast","t":"Preparar el desayuno"},{"v":"prepare afternoon tea tray","t":"Preparar la bandeja del té"},{"v":"unload groceries","t":"Descargar la compra"},{"v":"organize kitchen utensils","t":"Ordenar utensilios de cocina"},{"v":"clean countertops","t":"Limpiar encimeras"},{"v":"polish copper cookware","t":"Pulir cazos y utensilios de cobre"},{"v":"wash vegetables","t":"Lavar verduras"},{"v":"prepare snacks","t":"Preparar aperitivos"},{"v":"check refrigerator inventory","t":"Revisar inventario de nevera"},{"v":"clean coffee maker","t":"Limpiar la cafetera"},{"v":"prepare serving trays","t":"Preparar bandejas de servicio"},{"v":"scrub sink","t":"Fregar y desinfectar el fregadero"},{"v":"load dishwasher","t":"Cargar el lavavajillas"},{"v":"wash pots by hand","t":"Lavar ollas a mano"},{"v":"wash delicate glasses by hand","t":"Lavar copas delicadas a mano"},{"v":"sweep kitchen floor","t":"Barrer el suelo de la cocina"},{"v":"mop kitchen floor","t":"Fregar el suelo de la cocina"},{"v":"empty trash cans","t":"Vaciar cubos de basura"},{"v":"disinfect trash containers","t":"Desinfectar contenedores"},{"v":"clean microwave splashes","t":"Limpiar salpicaduras del microondas"},{"v":"clean ceramic hob","t":"Limpiar la vitrocerámica"},{"v":"check refrigerator expiration dates","t":"Revisar caducidades y limpiar estantes de nevera"},{"v":"wipe inside oven","t":"Limpiar el interior del horno"},{"v":"prepare ingredients","t":"Lavar, pelar y cortar ingredientes"},{"v":"replace kitchen towels and aprons","t":"Cambiar paños y delantales de cocina"},{"v":"wash kitchen textiles","t":"Lavar textiles de cocina"},{"v":"prepare staff meals","t":"Preparar comida del personal"}],"library":[{"v":"dust shelves","t":"Quitar polvo de estanterías"},{"v":"arrange books","t":"Ordenar libros"},{"v":"polish wooden furniture","t":"Pulir muebles de madera"},{"v":"clean reading table","t":"Limpiar mesa de lectura"},{"v":"organize newspapers","t":"Ordenar periódicos"},{"v":"refresh flower arrangements","t":"Refrescar arreglos florales"},{"v":"prepare reading area","t":"Preparar zona de lectura"},{"v":"open blinds","t":"Abrir persianas"},{"v":"close blinds","t":"Cerrar persianas"},{"v":"clean desk accessories","t":"Limpiar accesorios de escritorio"},{"v":"collect used teacups","t":"Recoger tazas de té usadas"},{"v":"arrange armchairs","t":"Ordenar butacas"},{"v":"static dusting books","t":"Limpiar lomos y parte superior de libros sin moverlos"},{"v":"deep cleaning shelves","t":"Retirar libros por secciones para limpiar el fondo de estanterías"},{"v":"aligning volumes","t":"Alinear volúmenes al borde de la estantería"},{"v":"using bookends","t":"Colocar sujetalibros"},{"v":"return consulted books","t":"Devolver libros consultados a su sitio"},{"v":"managing direct sunlight","t":"Bajar persianas para evitar sol directo sobre los libros"},{"v":"clear desk","t":"Ordenar papelería y limpiar superficie de trabajo"},{"v":"arrange reading nook","t":"Preparar rincón de lectura"},{"v":"consult a book","t":"Consultar un libro en la biblioteca"}],"terrace":[{"v":"arrange flowers","t":"Arreglar flores"},{"v":"water plants","t":"Regar plantas"},{"v":"arrange outdoor cushions","t":"Colocar cojines exteriores"},{"v":"prepare terrace before guests","t":"Preparar terraza antes de invitados"},{"v":"clear tea service","t":"Recoger servicio de té"},{"v":"clean outdoor furniture","t":"Limpiar mobiliario exterior"},{"v":"fold umbrellas","t":"Plegar sombrillas"},{"v":"open umbrellas","t":"Abrir sombrillas"},{"v":"place decorative lanterns","t":"Colocar faroles decorativos"},{"v":"sweep terrace floor","t":"Barrer suelo de terraza"},{"v":"remove fallen leaves","t":"Retirar hojas caídas"},{"v":"serve refreshments outdoors","t":"Servir refrescos en exterior"},{"v":"arrange hammocks","t":"Colocar hamacas"},{"v":"clean railings","t":"Limpiar barandillas"},{"v":"remove cobwebs from walls","t":"Quitar telarañas y manchas de polvo o humedad"},{"v":"empty ashtrays","t":"Vaciar ceniceros"},{"v":"clean food stains","t":"Limpiar manchas de comida"},{"v":"arrange terrace furniture","t":"Ordenar mobiliario"},{"v":"check drains and grates","t":"Revisar desagües y rejillas"},{"v":"check potted plants","t":"Revisar macetas"}],"service_corridor":[{"v":"transporting linens","t":"Transportar ropa blanca"},{"v":"organizing housekeeping cart","t":"Organizar carro de limpieza"},{"v":"replenishing cleaning supplies","t":"Reponer productos de limpieza"},{"v":"delivering fresh towels","t":"Llevar toallas limpias"},{"v":"collecting used linens","t":"Recoger ropa usada"},{"v":"feeding household pets","t":"Dar de comer a las mascotas"},{"v":"walking Coco and Lola","t":"Pasear a Coco y Lola"},{"v":"carrying laundry baskets","t":"Transportar cestos de ropa"},{"v":"checking service inventory","t":"Revisar inventario de servicio"},{"v":"preparing rooms for cleaning","t":"Preparar habitaciones para limpiar"}],"master_suite":[{"v":"change bed linens","t":"Cambiar sábanas"},{"v":"make bed","t":"Hacer la cama con sábanas tensas y almohadas mullidas"},{"v":"organize closet","t":"Ordenar armario"},{"v":"fold clothes","t":"Doblar ropa"},{"v":"prepare room for night","t":"Preparar la habitación para la noche"},{"v":"pick up dry cleaning","t":"Recoger ropa de tintorería"},{"v":"open windows","t":"Abrir ventanas"},{"v":"tidy personal belongings","t":"Ordenar objetos personales"},{"v":"freshen towels","t":"Cambiar toallas"},{"v":"clean bedside tables","t":"Limpiar mesillas"},{"v":"prepare breakfast tray","t":"Preparar bandeja de desayuno"},{"v":"organize shoes","t":"Ordenar zapatos"},{"v":"turn down bed","t":"Preparar la cama para dormir"},{"v":"close curtains and soft lighting","t":"Cerrar cortinas y encender luz suave"},{"v":"remove dirty laundry","t":"Retirar ropa sucia"},{"v":"check room presentation","t":"Revisar presentación de la habitación"}],"staff_room":[{"v":"change bed linens","t":"Cambiar sábanas"},{"v":"organize personal wardrobe","t":"Ordenar armario personal"},{"v":"fold uniforms","t":"Doblar uniformes"},{"v":"prepare uniforms for next shift","t":"Preparar uniformes para el siguiente turno"},{"v":"organize personal storage","t":"Ordenar almacenamiento personal"},{"v":"organize personal laundry basket","t":"Ordenar cesto de ropa personal"},{"v":"clean polish service shoes","t":"Limpiar y pulir zapatos de servicio"},{"v":"button last uniform button","t":"Abrochar el último botón del uniforme"},{"v":"adjust apron back tie","t":"Ajustar delantal con lazo trasero"},{"v":"put on white slippers","t":"Ponerse zapatillas blancas"},{"v":"check appearance in mirror","t":"Revisar apariencia en el espejo"},{"v":"take off dirty uniform","t":"Quitarse el uniforme sucio tras una jornada dura"},{"v":"iron work uniforms","t":"Planchar uniformes de trabajo y colgarlos"},{"v":"tidy personal bedroom","t":"Ordenar la habitación"}],"master_bathroom":[{"v":"change towels","t":"Cambiar toallas"},{"v":"restock toiletries","t":"Reponer amenities"},{"v":"clean mirrors","t":"Limpiar espejos"},{"v":"clean marble surfaces","t":"Limpiar mármol"},{"v":"prepare bathroom supplies","t":"Preparar suministros de baño"},{"v":"check guest supplies","t":"Revisar suministros de invitados"},{"v":"prepare bathroom before guests","t":"Preparar baño antes de invitados"},{"v":"organize vanity","t":"Ordenar tocador"},{"v":"change bathrobes","t":"Cambiar albornoces"},{"v":"deep disinfect toilet","t":"Desinfectar inodoro a fondo"},{"v":"clean sink","t":"Limpiar lavabo"},{"v":"polish faucets and handles","t":"Pulir grifos y tiradores"},{"v":"fold toilet paper triangle","t":"Reponer papel higiénico con punta doblada"},{"v":"ensure tissues","t":"Reponer pañuelos"},{"v":"clean glass shower screens","t":"Limpiar mamparas sin marcas"},{"v":"wash marble walls","t":"Lavar paredes de mármol"},{"v":"empty wastebasket","t":"Vaciar papelera"},{"v":"remove soap scum bathtub","t":"Retirar restos de jabón de la bañera"},{"v":"refresh floral arrangements","t":"Refrescar arreglos florales"}],"garden":[{"v":"cut hedges","t":"Recortar setos"},{"v":"arrange flowers","t":"Arreglar flores"},{"v":"collect fallen leaves","t":"Recoger hojas caídas"},{"v":"prepare garden before guests","t":"Preparar jardín antes de invitados"},{"v":"sweep paths","t":"Barrer caminos"},{"v":"check irrigation system","t":"Revisar riego"},{"v":"clean garden furniture","t":"Limpiar muebles de jardín"},{"v":"clean exterior glass","t":"Limpiar cristales exteriores"},{"v":"set outdoor tables gazebo","t":"Montar mesas exteriores en cenador"},{"v":"remove empty glasses outdoors","t":"Retirar vasos, platos y tazas vacíos"},{"v":"fill bird feeder","t":"Rellenar comedero de pájaros"},{"v":"cut flowers for bouquet","t":"Cortar flores para ramo"},{"v":"collect forgotten belongings","t":"Recoger objetos olvidados en jardín"},{"v":"empty outside ashtrays","t":"Vaciar ceniceros exteriores"},{"v":"turn off decorative lights","t":"Apagar luces decorativas"},{"v":"fix outdoor decorations","t":"Arreglar decoración exterior"}],"laundry":[{"v":"iron bed linens","t":"Planchar ropa de cama"},{"v":"fold sheets","t":"Doblar sábanas"},{"v":"sort laundry","t":"Clasificar ropa"},{"v":"load washing machines","t":"Cargar lavadoras"},{"v":"unload dryers","t":"Descargar secadoras"},{"v":"organize clean uniforms","t":"Ordenar uniformes limpios"},{"v":"prepare clean towels","t":"Preparar toallas limpias"},{"v":"check laundry inventory","t":"Revisar inventario de lavandería"},{"v":"remove stains bed linens","t":"Quitar manchas de ropa de cama"},{"v":"separate by labels","t":"Separar por color, tejido, temperatura y suciedad"},{"v":"check pockets","t":"Vaciar bolsillos antes de lavar"},{"v":"apply stain products","t":"Aplicar productos en cuellos, puños y manchas"},{"v":"put delicates in mesh bags","t":"Meter lencería y prendas delicadas en bolsas de malla"},{"v":"measure detergent","t":"Medir detergente y suavizante"},{"v":"empty lint filter","t":"Vaciar filtro de pelusas"},{"v":"remove laundry end cycle","t":"Retirar ropa al acabar ciclo"},{"v":"steam ironing","t":"Planchar con estación de vapor"},{"v":"fold house method","t":"Doblar con el método de la casa"},{"v":"hang shirts dresses","t":"Colgar camisas o vestidos en perchas correctas"},{"v":"hand wash delicates","t":"Lavar prendas delicadas a mano"},{"v":"pile folded clothes","t":"Apilar ropa doblada"}],"pantry":[{"v":"check pantry inventory","t":"Revisar inventario de despensa"},{"v":"organize shelves","t":"Ordenar estantes"},{"v":"rotate food inventory","t":"Rotar alimentos"},{"v":"receive deliveries","t":"Recibir entregas"},{"v":"organize canned goods","t":"Ordenar conservas"},{"v":"count supplies","t":"Contar suministros"},{"v":"restock kitchen inventory","t":"Reponer inventario de cocina"},{"v":"label containers","t":"Etiquetar recipientes"},{"v":"check expiration dates","t":"Revisar caducidades"},{"v":"prepare shopping list","t":"Preparar lista de la compra"},{"v":"clean shelves remove jars","t":"Limpiar estantes retirando tarros"},{"v":"hand clean china glassware","t":"Limpiar porcelana y cristalería fina a mano"},{"v":"sort placemats napkins","t":"Ordenar manteles individuales y servilletas por juegos"},{"v":"check stemware","t":"Comprobar copas sin marcas de agua"},{"v":"clean pantry trash can","t":"Limpiar papelera auxiliar"},{"v":"sweep mop pantry floor","t":"Barrer y fregar suelo de despensa"},{"v":"polishing silverware","t":"Pulir cubertería"},{"v":"counting silverware","t":"Contar cubertería"},{"v":"organizing cutlery drawers","t":"Ordenar cajones de cubertería"},{"v":"preparing formal service sets","t":"Preparar juegos de servicio formal"},{"v":"inspecting serving pieces","t":"Revisar piezas de servir"},{"v":"arranging trays","t":"Ordenar bandejas"},{"v":"storing cleaned silverware","t":"Guardar plata limpia"},{"v":"preparing banquet service","t":"Preparar servicio de banquete"},{"v":"cleaning display cabinets","t":"Limpiar vitrinas"}],"staircase":[{"v":"dusting banisters","t":"Quitar polvo de balaustres"},{"v":"polishing handrails","t":"Pulir pasamanos"},{"v":"vacuuming carpet runner","t":"Aspirar alfombra de escalera"},{"v":"arranging floral displays","t":"Arreglar flores"},{"v":"checking lighting fixtures","t":"Revisar iluminación"},{"v":"sweeping steps","t":"Barrer escalones"},{"v":"preparing entrance route","t":"Preparar recorrido de entrada antes de invitados"},{"v":"cleaning decorative elements","t":"Limpiar elementos decorativos"},{"v":"opening curtains","t":"Abrir cortinas"},{"v":"closing curtains","t":"Cerrar cortinas"}],"dressing_room":[{"v":"organize closet","t":"Ordenar armario"},{"v":"organize shoes","t":"Ordenar zapatos"},{"v":"prepare clothes","t":"Preparar ropa"},{"v":"fold garments","t":"Doblar prendas"},{"v":"check accessories","t":"Revisar accesorios"},{"v":"pick up dry cleaning","t":"Recoger ropa para tintorería"},{"v":"organize jewelry trays","t":"Ordenar bandejas de joyería"},{"v":"prepare evening outfit","t":"Preparar conjunto de noche"},{"v":"organize drawers","t":"Ordenar cajones"},{"v":"put clean clothes away","t":"Guardar ropa limpia"},{"v":"clean full length mirrors","t":"Limpiar espejos de cuerpo entero"},{"v":"keep scented sachets","t":"Colocar saquitos aromáticos"},{"v":"sort clothes by type","t":"Ordenar ropa por prenda, tejido y color"},{"v":"hang identical hangers","t":"Colgar en perchas iguales"},{"v":"fold sweaters same size","t":"Doblar jerséis al mismo tamaño"},{"v":"clean shoe soles","t":"Limpiar suelas y cepillar zapatos"},{"v":"put shoe trees","t":"Poner hormas"},{"v":"store handbags dust bags","t":"Guardar bolsos con papel y fundas"},{"v":"tidy watches organizers","t":"Ordenar relojes y organizadores"},{"v":"clean jewelry boxes","t":"Cerrar joyeros y limpiar piezas"},{"v":"prepare next day outfit","t":"Preparar ropa del día siguiente"}],"breakfast_room":[{"v":"setting breakfast table","t":"Poner mesa de desayuno"},{"v":"preparing coffee service","t":"Preparar servicio de café"},{"v":"preparing tea service","t":"Preparar servicio de té"},{"v":"arranging newspapers","t":"Colocar periódicos"},{"v":"serving breakfast","t":"Servir desayuno"},{"v":"clearing breakfast dishes","t":"Recoger vajilla de desayuno"},{"v":"replenishing pastries","t":"Reponer bollería"},{"v":"preparing juice service","t":"Preparar servicio de zumo"},{"v":"arranging flowers","t":"Arreglar flores"},{"v":"cleaning table after breakfast","t":"Limpiar mesa tras desayuno"}],"rear_service_entrance":[{"v":"receive deliveries","t":"Recibir entregas"},{"v":"unload groceries","t":"Descargar compra"},{"v":"pick up packages","t":"Recoger paquetes"},{"v":"organize incoming supplies","t":"Ordenar suministros entrantes"},{"v":"review delivery invoices","t":"Revisar albaranes"},{"v":"greet service providers","t":"Recibir proveedores"},{"v":"move supplies inside","t":"Mover suministros al interior"},{"v":"collect laundry deliveries","t":"Recoger tintorería"},{"v":"prepare outgoing packages","t":"Preparar paquetes de salida"},{"v":"check boxes damage","t":"Comprobar cajas dañadas"},{"v":"sweep mop floor","t":"Barrer y fregar suelo"},{"v":"clean doormat","t":"Sacudir o aspirar felpudo"},{"v":"clean doorknobs intercom","t":"Limpiar pomos, timbres e interfonos"},{"v":"dry umbrellas","t":"Secar paraguas antes de guardarlos"},{"v":"tidy key board","t":"Ordenar tablero de llaves"},{"v":"check delivery board","t":"Revisar tablero de entregas"},{"v":"monitor merchandise arrival","t":"Controlar llegada de mercancía"}],"street_exterior":[{"v":"supermarket groceries","t":"Comprar en supermercado"},{"v":"select fresh produce","t":"Seleccionar fruta y verdura"},{"v":"check shopping list","t":"Revisar lista de la compra"},{"v":"compare product quality","t":"Comparar calidad de productos"},{"v":"buy household supplies","t":"Comprar suministros domésticos"},{"v":"choose flowers","t":"Elegir flores"},{"v":"buy pet food","t":"Comprar comida para mascotas"},{"v":"transport groceries","t":"Transportar la compra"},{"v":"check special orders","t":"Revisar encargos especiales"},{"v":"wait at checkout","t":"Esperar en caja"},{"v":"use thermal bags","t":"Usar bolsas térmicas"},{"v":"bakery pickup","t":"Recoger pan o pasteles en panadería"},{"v":"go pharmacy","t":"Ir a la farmacia"},{"v":"go florist","t":"Comprar flores"},{"v":"go delicatessen","t":"Comprar en charcutería gourmet"},{"v":"return online packages","t":"Devolver paquetes online"},{"v":"walk dogs schedule","t":"Pasear perros en horario establecido"},{"v":"pick dog excrement","t":"Recoger excrementos de los perros"},{"v":"clean dog urine","t":"Limpiar orina con agua"},{"v":"take dogs vet","t":"Llevar perros al veterinario"},{"v":"take dogs groomer","t":"Llevar perros a peluquería canina"},{"v":"sit with pets bench","t":"Sentarse con mascotas en un banco"},{"v":"dry cleaner delivery","t":"Llevar ropa a tintorería"},{"v":"post office","t":"Ir a correos"},{"v":"carry pet supplies","t":"Transportar suministros de mascotas"}],"lady_study":[{"v":"detailed cleaning","t":"Limpieza detallada"},{"v":"surface cleaning","t":"Limpieza de superficies"},{"v":"dust desk shelves frames","t":"Quitar polvo de escritorio, estantes y marcos"},{"v":"clean computer screen keyboard","t":"Limpiar pantalla y teclado"},{"v":"vacuum delicate carpets","t":"Aspirar alfombras delicadas"},{"v":"polish hardwood floors","t":"Pulir suelo de madera"},{"v":"mail delivery desk","t":"Colocar cartas y periódicos en el escritorio"},{"v":"replenish office supplies","t":"Reponer papelería de lujo"},{"v":"empty office wastebasket","t":"Vaciar papelera del despacho"},{"v":"adjust climate lighting","t":"Ajustar climatización e iluminación"},{"v":"light scented candles","t":"Encender velas aromáticas"},{"v":"bring collect coffee tray","t":"Traer o recoger bandeja de café o té"},{"v":"care desk plants","t":"Regar y limpiar plantas del escritorio"}],"staff_dining_room":[{"v":"preparing housekeeping schedule","t":"Preparar horario de limpieza"},{"v":"organizing daily assignments","t":"Organizar tareas diarias"},{"v":"checking cleaning supplies","t":"Revisar productos de limpieza"},{"v":"folding uniforms","t":"Doblar uniformes"},{"v":"preparing service trays","t":"Preparar bandejas de servicio"},{"v":"reviewing task lists","t":"Revisar listas de tareas"},{"v":"arranging room keys","t":"Ordenar llaves"},{"v":"documenting completed work","t":"Anotar trabajo completado"},{"v":"organizing maintenance requests","t":"Organizar avisos de mantenimiento"},{"v":"place clean tablecloth","t":"Poner mantel limpio"},{"v":"set staff table","t":"Poner mesa del personal"},{"v":"bring water and bread","t":"Traer agua y pan"},{"v":"serve staff meal","t":"Servir comida al personal"},{"v":"clear staff table","t":"Recoger mesa del personal"},{"v":"clean staff table","t":"Limpiar y desinfectar mesa"}],"staff_bathroom":[{"v":"replenish supplies","t":"Reponer suministros"},{"v":"change towels","t":"Cambiar toallas"},{"v":"clean mirrors","t":"Limpiar espejos"},{"v":"prepare bathroom","t":"Preparar baño"},{"v":"clean sinks","t":"Limpiar lavabos"},{"v":"replenish toilet paper","t":"Reponer papel higiénico"},{"v":"clean toilet","t":"Limpiar inodoro"},{"v":"clean shower screen","t":"Limpiar mampara"},{"v":"organize personal toiletries","t":"Ordenar artículos de higiene personal"}],"main_door":[{"v":"collect newspaper mailbox","t":"Recoger periódico del buzón"},{"v":"greet visitors","t":"Recibir visitas"},{"v":"receive deliveries","t":"Recibir entregas"},{"v":"check entrance appearance","t":"Comprobar aspecto de la entrada"},{"v":"open door service providers","t":"Abrir puerta a proveedores"},{"v":"collect packages","t":"Recoger paquetes"},{"v":"sweep driveway","t":"Barrer entrada"},{"v":"arrange entry flowers","t":"Arreglar flores de entrada"},{"v":"open door for lady","t":"Abrir puerta a la señora"},{"v":"see lady off","t":"Despedir a la señora"},{"v":"wait with door open","t":"Esperar a la señora con la puerta abierta"},{"v":"help lady suitcases","t":"Ayudar a la señora con maletas"},{"v":"monitor arrivals","t":"Controlar llegadas"},{"v":"taking guests coats","t":"Recoger abrigos de los invitados al llegar"},{"v":"placing coats cloakroom","t":"Guardar abrigos en el guardarropa"},{"v":"receiving umbrellas","t":"Recibir paraguas de los invitados"}],"broom_closet":[{"v":"organize cleaning products","t":"Ordenar productos de limpieza"},{"v":"change mop heads","t":"Cambiar cabezales de mopa"},{"v":"prepare cleaning cart","t":"Preparar carro de limpieza"},{"v":"check chemical inventory","t":"Revisar inventario químico"},{"v":"store cleaning equipment","t":"Guardar equipo de limpieza"},{"v":"refill spray bottles","t":"Rellenar pulverizadores"},{"v":"organize shelves","t":"Ordenar estantes"},{"v":"collect new supplies","t":"Recoger suministros nuevos"},{"v":"label products","t":"Colocar productos por categoría con etiquetas visibles"},{"v":"sort bottles sponges cloths","t":"Ordenar botellas, esponjas, paños y cepillos"},{"v":"clean store vacuums","t":"Limpiar y guardar aspiradores, escobas y cubos"},{"v":"prepare room cleaning kit","t":"Preparar kit de limpieza por habitación"}],"service_yard":[{"v":"sorting recycling","t":"Separar plástico, vidrio, papel y residuos"},{"v":"compost management","t":"Gestionar compost"},{"v":"move heavy containers","t":"Mover contenedores pesados al punto de recogida"},{"v":"disinfect containers","t":"Desinfectar contenedores con presión"},{"v":"hang delicate garments outside","t":"Tender prendas delicadas al aire"},{"v":"air duvets pillows rugs","t":"Airear edredones, almohadas y alfombras"},{"v":"collect dry laundry","t":"Recoger ropa seca del patio"},{"v":"fold garments baskets","t":"Colocar prendas en cestos"},{"v":"collect firewood pellets","t":"Recoger leña o pellets"},{"v":"greet couriers service entrance","t":"Recibir repartidores en entrada de servicio"},{"v":"sweep wash yard","t":"Barrer y lavar patio de servicio"},{"v":"open service yard gates","t":"Abrir portones a contratistas"},{"v":"dispose household waste","t":"Eliminar residuos domésticos"},{"v":"separate recyclable materials","t":"Separar reciclaje"},{"v":"transport garbage containers","t":"Transportar contenedores"},{"v":"collect recycling containers","t":"Recoger contenedores de reciclaje"},{"v":"organize waste area","t":"Ordenar zona de residuos"},{"v":"dispose garden waste","t":"Tirar residuos de jardín"},{"v":"change garbage bags","t":"Cambiar bolsas de basura"}]};
+const LOCATIONS=[{"value":"dining_room","label":"Comedor"},{"value":"living_room","label":"Salón"},{"value":"kitchen","label":"Cocina"},{"value":"library","label":"Biblioteca"},{"value":"terrace","label":"Terraza"},{"value":"service_corridor","label":"Pasillo de servicio"},{"value":"master_suite","label":"Suite principal"},{"value":"staff_room","label":"Habitación del personal"},{"value":"master_bathroom","label":"Baño principal"},{"value":"garden","label":"Jardín"},{"value":"laundry","label":"Lavandería"},{"value":"pantry","label":"Despensa"},{"value":"staircase","label":"Escalera"},{"value":"dressing_room","label":"Vestidor"},{"value":"breakfast_room","label":"Salita de desayunar"},{"value":"rear_service_entrance","label":"Entrada de servicio trasera"},{"value":"street_exterior","label":"Exterior de la residencia / calle"},{"value":"lady_study","label":"Despacho privado de la señora"},{"value":"staff_dining_room","label":"Comedor del personal"},{"value":"staff_bathroom","label":"Baño del personal"},{"value":"main_door","label":"Puerta principal"},{"value":"broom_closet","label":"Cuarto de limpieza"},{"value":"service_yard","label":"Patio de servicio"}];
+const $=id=>document.getElementById(id),V=id=>$(id).value,T=id=>$(id).options[$(id).selectedIndex].text;
+const MODELS={
+A:`MASTER UNIFORM A — WORK DRESS WITH HALF APRON:
+One-piece straight knee-length housekeeping dress. Rounded open shirt collar; thin white piping only on the collar's outer perimeter, never on inner lapel edges. Sleeves use the characteristic restrained workwear construction with thin piping at the sleeve endpoint. Exactly three equidistant front buttons. Placket ends at waist.
+White rectangular half apron, no bib, no lace, no rounded corners, 5–7 cm shorter than dress. Two large rectangular pockets with narrow bands made from dress fabric. Wide 6–7 cm waistband and prominent rear bow.`,
+B:`MASTER UNIFORM B — WORK DRESS WITH WHITE BIB APRON:
+Same work dress as A. Mandatory matte-white bib apron. BUTTON/BIB VISIBILITY LOCK: the dress buttons keep realistic generous vertical spacing, approximately 6–8 cm center-to-center. The bib physically overlaps the lower placket. Above the bib, show at most two dress buttons; preferably one full button plus a second button partly occluded by the bib top edge, or only one button. NEVER compress three buttons into the short visible chest area. NEVER place or print a dress button on top of the bib surface. Flat rectangular or minimally trapezoidal bib; horizontal top and straight nearly vertical sides. Wide straight straps equal to waistband width, crossed at back. Wide waistband, large rear bow, full front panel 5–7 cm shorter than dress. Two large rectangular pockets with narrow bands made from dress fabric.`,
+BC:`MASTER UNIFORM B COORDINATED — ABSOLUTE OVERRIDE:
+
+This specification overrides every generic concept of a maid apron. Do not generate a traditional white, grey, ivory, cream, beige or contrasting bib apron.
+
+DRESS:
+Use the same work dress construction as MASTER UNIFORM A. BUTTON/BIB VISIBILITY LOCK: keep realistic generous button spacing, approximately 6–8 cm center-to-center. The bib physically overlaps the lower placket. Above the bib, show at most two dress buttons; preferably one full button plus a second partly occluded by the bib top edge, or only one. NEVER compress three buttons into the visible chest area and NEVER place a dress button on the apron/bib surface.
+
+COORDINATED APRON — SAME ROLL OF FABRIC:
+The bib apron is a separate physical garment cut from the exact same production roll of fabric as the dress.
+
+The following apron components must be identical to the dress fabric:
+- bib body;
+- both shoulder straps;
+- waistband;
+- complete lower apron panel;
+- rear bow and bow tails;
+- bodies of both pockets.
+
+They must have exactly the same selected color, weave, stripe/check/herringbone/solid pattern, pattern scale, thread thickness, matte finish, ageing, fading, wear, wrinkles, softness, fabric weight, drape and response to light.
+
+The dress and apron fabric must be visually indistinguishable while the apron remains a separate garment through its seams, edges, overlap shadows and independent folds.
+
+ONLY WHITE ELEMENTS:
+Exactly three white fabric inserts are permitted:
+1. one straight horizontal white band near the top of the bib;
+2. one straight horizontal white band on the left pocket;
+3. one straight horizontal white band on the right pocket.
+
+Every other visible apron component must use the selected dress fabric. No white straps. No white waistband. No white apron panel. No grey bib. No contrasting bow.
+
+ABSOLUTE PROHIBITIONS:
+Never generate a conventional white maid apron, grey apron, ivory apron, cream apron, beige apron, contrasting apron, differently woven apron, plain apron over patterned dress, different stripe scale, different herringbone, different ageing, different fabric weight or different light response.
+
+If any conflict exists between this coordinated construction and a learned generic maid-apron convention, this coordinated construction always takes precedence.`,
+C:`MASTER UNIFORM C — FORMAL SERVICE:
+Straight knee-length formal dress. Closed white Peter Pan collar with fine lace. Exactly four equidistant buttons TOTAL on the dress; never five or more. Placket ends at waist. Sleeves always terminate in broad opaque white cuffs with restrained fine white lace; sleeve LENGTH is controlled exclusively by the EFFECTIVE SLEEVE CONFIGURATION generated below. Formal white half apron with fine lace, wide waistband and large rear bow. Black closed low-heel service shoes. No bib apron.`,
+D:`MASTER UNIFORM D — ITALIAN CLASSIC DOMESTIC — ABSOLUTE SUPER LOCK v2.0:
+
+DESIGN IDENTITY:
+Traditional Italian domestic-service uniform. Reproduce this exact construction and visual balance. No modernization, redesign, fashion adaptation, French-maid styling, hotel styling, nurse styling or generic kitchen-apron interpretation.
+
+DRESS CONSTRUCTION:
+One-piece work dress with a straight silhouette and only subtle waist shaping. Knee length, ending around the middle of the kneecap. The skirt front is completely smooth and uninterrupted: no central pleat, no inverted pleat, no slit and no opening visible below the apron.
+Flat white rounded collar, halfway between a rounded shirt collar and a restrained Peter Pan collar. Short modest center opening.
+Exactly three small equidistant buttons exist on the dress placket. When the apron is worn, only the first full button and approximately half of the second button are visible above the bib; the remaining button and placket are hidden behind the apron.
+Sleeves terminate in broad separate white cuffs, approximately 5–6 cm deep, perfectly horizontal. Sleeve LENGTH is controlled exclusively by the EFFECTIVE SLEEVE CONFIGURATION generated below.
+
+APRON CONSTRUCTION:
+Independent white bib apron. The apron is smaller than the dress and preserves a clear, regular border of visible dress around it.
+Two broad pure-white shoulder straps, perfectly straight, parallel and identical in width from shoulder to waist. Strap width approximately 5–6 cm. Never narrow, tapered, twisted, striped or differently sized.
+The upper bib is flat and geometric. Its white body rises from the waistband to the chest. At the top center there is a mandatory rectangular opening that exposes the striped or solid dress chest panel beneath the collar. This opening has a horizontal lower edge and vertical sides and is framed with coordinated dress-fabric binding. It must never be filled with white fabric and must never become a separate decorative patch.
+The bib side edges are straight through most of their height and may soften only slightly as they meet the waistband. The bib never follows breast anatomy and never becomes hourglass-shaped.
+Wide pure-white waistband, approximately 6–7 cm high, perfectly horizontal at the natural waist.
+Large centered rear bow with long pure-white tails.
+
+APRON LOWER PANEL:
+The lower apron panel begins immediately below the waistband. It is visibly smaller and shorter than earlier versions: approximately 78–82% of the dress skirt length measured from waist to hem, finishing about 12–15 cm above the dress hem.
+Its upper sides are nearly vertical, then transition into a smooth broad U-shaped lower curve. The outer silhouette is symmetrical.
+No pockets on this canonical Italian model.
+
+DOUBLE CONCENTRIC COORDINATED BINDING:
+The lower apron has exactly two broad, clearly visible, perfectly concentric U-shaped coordinated bindings:
+1. one outer binding following the complete outer edge of the apron;
+2. one inner binding following the same curve at a constant inset.
+Both lines are made from the exact same fabric as the dress, including the same stripe color, stripe scale, check, weave or solid color.
+Each binding is visually broad, approximately 9–12 mm wide.
+The spacing between the two bindings is constant, approximately 7–9 cm across the sides and lower curve.
+The inner and outer bindings must remain parallel and concentric from the waistband to the bottom curve. Never hairline thin, never irregular, never converging, never touching and never changing thickness.
+The same broad coordinated binding finishes the vertical edges of the upper bib and the complete rectangular chest opening.
+
+FABRIC AND COLOR SYSTEM:
+The construction is fixed; fabric and color are variable.
+For striped versions, use a precise regular vertical rhythm. Default Italian stripe: colored stripe approximately 2 mm, white interval approximately 2 mm, constant from collar to hem. The coordinated binding is cut on the bias so the stripes appear diagonal.
+Allowed stripe colors include navy, dusty blue, sage, bottle green, warm grey, taupe, chocolate, burgundy, dusty rose or other selected colors.
+Solid-color versions are equally valid. In solid versions, the dress is one matte solid color and every coordinated binding uses that exact same solid fabric and color. The apron body, shoulder straps, waistband, bow, collar and sleeve cuffs remain white.
+
+PROPORTION LOCK:
+Keep the same proportions in every body size:
+- shoulder straps: 5–6 cm constant width;
+- waistband: 6–7 cm height;
+- apron lower-panel width: approximately 62–68% of the dress width at the same level;
+- apron lower-panel length: 78–82% of the visible dress skirt length;
+- two lower bindings: 9–12 mm each with constant 7–9 cm spacing;
+- rectangular chest opening centered and wider than tall;
+- only one full button plus half of the second visible above the bib.
+
+BACK VIEW:
+Both white straps continue over the shoulders and down the back with identical constant width. They may cross cleanly or remain nearly vertical according to the construction view, but must be symmetrical. Wide white waistband tied into one large centered bow with long tails. No rear apron panel hanging over the dress.
+
+FOOTWEAR:
+White canvas ballerina-style domestic work shoes, rounded closed toe, closed heel and low continuous 3–4 cm wedge. A solid coordinated canvas color may be selected. Never pumps, stilettos, conventional heels, sneakers, loafers or leather court shoes.
+
+ABSOLUTE PROHIBITIONS:
+No dress pleat below the apron. No visible skirt slit. No apron pockets. No curved anatomical bib. No hourglass bib. No narrow straps. No unequal straps. No striped straps. No thin piping. No single lower piping line. No non-concentric double lines. No white-filled chest insert. No more than one full button plus half of the second visible while the apron is worn. No lace, ruffles, embroidery, bows on the front, decorative buttons, erotic styling or cosplay.`
+};
+const BIB=`BIB GEOMETRY ABSOLUTE LOCK:
+The bib is a flat independent geometric panel. Top edge perfectly horizontal. Side edges straight and almost vertical. Maximum inward taper 5%. Never follow bust or torso. Never curved, rounded, sculpted, hourglass-shaped, ergonomic, anatomical or body-contoured. Never a modern kitchen-apron silhouette.`;
+const STYLE={
+photo:`PHOTOREALISTIC DOCUMENTARY MODE: 8K photorealistic image, authentic private-residence domestic service, natural skin texture, realistic textile weave and physically believable lighting. No beauty-campaign styling, CGI or illustration.`,
+direct_flash:`DIRECT-FLASH PHOTOGRAPHY — ABSOLUTE STYLE LOCK:
+Photorealistic contemporary documentary photography shot with a strong direct on-camera flash. The direct frontal camera flash is the dominant light source and overrides the generic lighting selector whenever necessary to preserve the flash look.
+Bright immediate illumination on the subject, crisp flash-defined detail and realistic hard-to-semi-hard shadows cast behind the subject and nearby objects. Natural flash falloff may leave the background moderately darker.
+Preserve exact identity, apparent age, body profile, uniform construction, activity, headwear, wear and domestic realism.
+SKIN: real photographic skin texture, visible pores and natural imperfections, with plausible flash highlights on forehead, nose, cheeks and exposed skin. Never plastic, airbrushed or beauty-filtered.
+FABRICS: flash must reveal textile weave, seams, wrinkles, piping, apron texture, stains, wear and moisture clearly. Whites retain recoverable detail and are not featureless blown-out shapes.
+CAMERA CHARACTER: candid, immediate, slightly raw on-camera-flash photography; sharp subject detail; realistic lens perspective and depth of field.
+NOT studio softbox lighting, cinematic lighting, golden-hour lighting, diffused beauty lighting, glossy fashion-campaign lighting, illustration, CGI, HDR or fake flash effect.`,
+clean_character:`CLEAN FASHION CHARACTER ILLUSTRATION — ABSOLUTE STYLE LOCK:
+Clean polished digital fashion-character illustration, closer to a professional character sheet / commercial fashion reference drawing than to painterly editorial art.
+STYLE: crisp controlled dark contour lines define the figure, face, hair, garments and important construction details. Smooth flat-to-soft color fills, restrained cel-style shading, minimal painterly texture and no photographic rendering.
+CHARACTER: realistic adult human proportions adapted to clean fashion illustration. Preserve the uploaded identity, real apparent age, wrinkles, asymmetry and distinctive features. Never automatically beautify, rejuvenate or replace the face with a generic fashion-model face.
+BODY: preserve exact height, weight, build, BMI, bust, waist, hips and leg proportions. No elongated croquis anatomy.
+HAIR: simplified controlled strand groups and clean silhouette rather than photorealistic individual hairs; preserve selected hairstyle, real density and headwear relationship.
+CLOTHING: garment construction must be exceptionally readable. Precisely define seams, piping, cuffs, collars, buttons, apron geometry, bib, straps, pockets, hems, footwear and headwear. Do not redesign the uniform.
+FABRICS: colors and patterns remain identifiable, but textures are simplified rather than photorealistically rendered.
+LIGHTING: soft neutral illustrative illumination with subtle shadows only.
+BACKGROUND: plain/minimal for character sheets or a clean simplified illustrated version of the selected environment when a scene is requested.
+OVERALL: professional digital character illustration, clean commercial linework, smooth restrained coloring, high garment readability.
+NOT photograph, photorealism, painterly editorial art, watercolor, sketchy unfinished strokes, rough pencil, CGI, anime, manga, chibi, thick comic-book inking or extreme fashion croquis.`,
+soft_editorial:`SOFT EDITORIAL FASHION PAINTING — ABSOLUTE STYLE LOCK:
+Refined contemporary digital fashion painting. Semi-realistic anatomy, soft delicate contours, little obvious linework, smooth tonal transitions, subtle painterly texture, realistic but gently simplified garment folds, warm elegant editorial finish and sophisticated low-saturation palette.
+Preserve the uploaded identity exactly: real apparent age, wrinkles, asymmetry and distinctive features. Preserve the BODY PROFILE exactly; do not slim, lengthen, rejuvenate or modelize.
+Use soft warm natural daylight and restrained cream/ivory private-residence architecture. Do not force the same arch or doorway into every scene.
+Uniform construction remains exact: collar, sleeves, button count, apron geometry, bib, straps, waistband, pockets, piping, dress length, footwear, stockings, headwear, fabric pattern and wear level.
+Not photorealistic, anime, manga, cartoon, comic, watercolor, pencil sketch, flat vector, CGI or extreme fashion croquis.`,
+lookbook:`POLISHED FASHION LOOKBOOK ILLUSTRATION — ABSOLUTE STYLE LOCK:
+Polished high-end digital fashion illustration, clearly illustrated rather than photographic, with precise elegant linework, softly visible contours, controlled cel/painterly hybrid shading, smooth illustrated skin, warm editorial highlights, crisp garment construction and premium commercial lookbook finish.
+Preserve exact age, height, weight, build, BMI, bust, waist, hips and leg proportions. Do not import generic runway-model anatomy. Preserve recognizable identity and real facial maturity; no generic young fashion face.
+Hair uses clearly separated locks and polished illustrated highlights while preserving the selected hairstyle and real hair volume.
+Render clothing exceptionally clearly without fashion-redesigning domestic-service garments.
+Background may be warm ivory/pale cream and uncluttered, but a selected domestic location or activity overrides generic studio presentation.
+Not photograph, photorealism, 3D render, CGI, anime, manga, children's illustration, comic, watercolor, pencil sketch, rough concept art, flat vector, extreme elongated anatomy or Barbie proportions.`,
+dark_outline:`REFINED DARK-OUTLINE EDITORIAL ILLUSTRATION — ABSOLUTE STYLE LOCK:
+Render the requested character, uniform, activity and domestic environment as a sophisticated contemporary editorial illustration defined by elegant dark contour linework.
+
+CORE VISUAL IDENTITY:
+- refined adult editorial fashion illustration;
+- semi-realistic anatomy;
+- warm sophisticated palette;
+- clearly visible dark contour line around principal forms;
+- fine-to-medium line weight with subtle natural variation;
+- soft volumetric shading inside the outlined forms;
+- clearly illustrated rather than photographic.
+
+DARK OUTLINE — ABSOLUTE LOCK:
+A continuous dark brown, charcoal-brown or near-black contour must visibly define the principal silhouette and important internal construction:
+body silhouette, face and jaw, nose profile where visible, neck, shoulders, arms, hands, fingers when readable, hair silhouette, major hair masses, garment edges, collar, cuffs, apron perimeter, bib, straps, waistband, pockets, piping, seams, shoes, props and important furniture edges.
+
+LINE QUALITY:
+Elegant editorial ink line. Smooth and controlled. Slightly stronger on outer silhouettes, finer on facial details, seams and folds. Moderately variable thickness.
+Never thick comic-book inking, thick black cartoon outlines, flat vector strokes or mechanically uniform line weight.
+
+FACE:
+Preserve the uploaded identity as the sole source of facial geometry.
+Translate the real face into the outlined illustration language without replacing it with a generic fashion face.
+Preserve apparent age, facial maturity, wrinkles, asymmetry and distinctive traits.
+No automatic beautification or rejuvenation.
+
+BODY:
+Preserve the BODY PROFILE exactly.
+Do not slim, elongate, narrow the waist, enlarge the legs or convert the person into a runway-model body.
+
+HAIR:
+Render controlled illustrated hair masses with visible dark contouring and selected internal strand groups.
+Preserve actual colour, density, hairstyle and headwear relationship.
+Do not create extra glamorous volume.
+
+CLOTHING AND UNIFORM:
+Use refined dark contouring to clarify exact uniform construction:
+dress silhouette, exact hem length, collar, cuffs, buttons, apron edges, bib geometry, straps, waistband, pockets, piping, footwear, stockings and headwear.
+Linework reinforces construction; it never redesigns the garment.
+All existing uniform locks remain absolute.
+
+FABRIC:
+Show colour, pattern, folds, drape, wear, stains and moisture with soft illustrated shading inside the outlined shapes.
+Do not turn patterned fabric into flat graphic fill.
+
+BACKGROUND:
+Domestic interiors and architecture may use restrained dark linework, but background contours should generally be lighter or less dominant than the character.
+Use the selected location rather than forcing a blank studio background.
+
+LIGHTING:
+Soft warm editorial light with gentle shadows and subtle gradients inside the defined outlines.
+No photographic depth of field.
+
+DOMESTIC ACTIVITY:
+When working, preserve credible household body mechanics.
+The outline style changes the rendering medium only.
+Never create fashion posing during cleaning, cooking, ironing, making beds, serving or other domestic tasks.
+
+ABSOLUTE NEGATIVES:
+photograph, photorealism, 3D render, CGI, anime, manga, superhero comic-book style, thick black cartoon outlines, cel-animation look, flat vector art, uniform mechanical stroke width, children's illustration, chibi, watercolor, pencil-only sketch, rough concept art, extreme fashion croquis, generic runway-model anatomy, plastic skin, missing contour line, soft painting with no visible outline, outline-only drawing with no interior shading.`,
+coloring_book:`COLORING BOOK — BLACK LINE ON WHITE — ABSOLUTE STYLE LOCK:
+Render the requested character, uniform, activity and domestic environment as a clean adult coloring-book line drawing derived from the same refined editorial geometry as the Dark-Outline style.
+
+CORE OUTPUT:
+- pure white background and white unfilled interior spaces;
+- black linework only;
+- no color;
+- no grey fills;
+- no painted shading;
+- no gradients;
+- no hatching;
+- no cross-hatching;
+- no halftone;
+- no texture fills;
+- no photographic rendering.
+
+LINE ART — ABSOLUTE LOCK:
+Use clean continuous black contour lines to define the complete drawing:
+body silhouette, face contour, jaw, nose, ears when visible, hair silhouette, internal hair divisions, neck, shoulders, arms, hands, fingers when readable, garment edges, collars, cuffs, buttons, apron perimeter, bib, straps, waistband, pockets, piping, seams, shoes, stockings, headwear, props, furniture and the essential architecture of the selected location.
+
+LINE WEIGHT:
+- crisp black lines;
+- fine-to-medium thickness;
+- slightly stronger outer silhouettes;
+- finer interior construction lines;
+- consistent editorial elegance;
+- no fuzzy charcoal edges;
+- no brush-paint texture;
+- no thick comic outline.
+
+FACE AND IDENTITY:
+Preserve the uploaded identity and apparent age through facial geometry and proportion.
+Do not replace the person with a generic young coloring-book woman.
+Represent wrinkles and distinctive facial structure only with restrained contour lines where necessary.
+No beautification, rejuvenation or simplification that destroys identity.
+
+BODY:
+Preserve the exact BODY PROFILE.
+Do not slim, elongate or fashion-modelize the character.
+The line drawing must follow the selected body proportions exactly.
+
+HAIR:
+Represent the selected hairstyle clearly with black contour linework and a limited number of clean internal strand/mass divisions.
+Do not fill hair with black.
+Hair interior remains white like the rest of the page.
+
+UNIFORM AND CLOTHING:
+Uniform construction must remain exceptionally clear and faithful.
+Use linework to preserve:
+- exact dress silhouette and hem length;
+- collar shape;
+- sleeve geometry;
+- button count;
+- apron shape;
+- bib geometry;
+- straps;
+- waistband;
+- pockets;
+- piping;
+- footwear;
+- stockings;
+- cofia/headwear;
+- fabric construction lines.
+
+PATTERNS:
+If the selected fabric is striped, checked, herringbone or otherwise patterned, render the pattern only with simplified clean black linework where it materially helps identify the fabric.
+Never flood the garment with dense black texture.
+Keep the page practical to color by hand.
+
+WEAR / STAINS / WETNESS:
+When wear, dirt, stains or moisture are selected, indicate them only with sparse contour marks, irregular outlines or minimal symbolic texture.
+Do not use grey fills or tonal shading.
+
+BACKGROUND:
+Use the selected domestic location, but simplify it into readable essential line art.
+Keep background detail lighter and less dense than the character.
+Avoid clutter.
+All background surfaces remain white inside black outlines.
+
+ACTIVITY:
+The character must genuinely perform the selected domestic task.
+Preserve activity-driven body mechanics, composition variation and body orientation.
+Do not convert the scene into a static fashion pose.
+
+PAGE READABILITY:
+The final image should be suitable for printing as an adult coloring page.
+Large enclosed white areas, clean separation between objects, no muddy line clusters, no accidental black fills.
+
+ABSOLUTE NEGATIVES:
+color, colored line, grey shading, grayscale painting, shadows filled with grey, gradients, watercolor, pencil shading, charcoal, hatching, cross-hatching, halftone, photorealism, CGI, 3D render, anime, manga, comic-book panel style, thick cartoon outlines, black-filled hair, black-filled clothing, flat vector color blocks, dark background, beige background, cream background, textured paper background, missing line art, incomplete contours.`,
+catalog:`UNIFORM CATALOG MODE: clean professional catalog presentation, full uniform clearly visible, neutral studio background, centered stance, precise geometry and readable fabric.`,
+sheet:`TECHNICAL SPECIFICATION SHEET MODE: clean fashion specification sheet with front and rear dressed views, technical flats and close-up garment details. Ivory grid layout. Do not invent construction.`,
+flat:`TECHNICAL FLAT DRAWING MODE: no human model. Precise front and back flat drawing, symmetrical construction, thin clean lines and white background.`,
+ghost:`GHOST MANNEQUIN MODE: no visible person. Invisible mannequin showing exact 3D garment construction, front view, pure white background and realistic drape.`,
+character:`CHARACTER SHEET MODE: same identity and exact uniform in full-body front, three-quarter and rear views on a clean neutral background.`
+};
+
+
+const CANONICAL_SLEEVE={
+A:"short",
+B:"short",
+BC:"short",
+C:"three_quarter",
+D:"short"
+};
+
+const SLEEVE_DESIGN={
+A:`MASTER A SLEEVE DESIGN:
+Restrained domestic-work sleeve construction with thin piping at the sleeve endpoint. Preserve this piping at whichever length is effectively selected.`,
+B:`MASTER B SLEEVE DESIGN:
+Use the same sleeve construction as MASTER A: restrained domestic-work sleeve with thin piping at the effective sleeve endpoint.`,
+BC:`MASTER B COORDINATED SLEEVE DESIGN:
+Use the same sleeve construction as MASTER A: restrained domestic-work sleeve with thin piping at the effective sleeve endpoint.`,
+C:`MASTER C SLEEVE DESIGN:
+Every sleeve terminates in one broad opaque white cuff approximately 5–7 cm deep, finished with restrained fine white lace.
+This cuff construction is mandatory at ANY selected sleeve length.`,
+D:`MASTER D SLEEVE DESIGN:
+Every sleeve terminates in one broad separate white cuff approximately 5–6 cm deep, perfectly horizontal.
+This cuff construction is mandatory at ANY selected sleeve length.`
+};
+
+function effectiveSleeveLength(){
+ const selected=V("sleeveLength");
+ return selected==="canonical" ? CANONICAL_SLEEVE[V("uniform")] : selected;
+}
+
+function sleeveLengthLock(){
+ const eff=effectiveSleeveLength();
+ const source=V("sleeveLength")==="canonical"
+   ? `Canonical length for MASTER ${V("uniform")}.`
+   : `Explicit user override. This replaces the canonical sleeve length for MASTER ${V("uniform")}.`;
+
+ const common=`EFFECTIVE SLEEVE CONFIGURATION — SINGLE SOURCE OF TRUTH:
+${source}
+Only the effective sleeve length stated in this block may be rendered.
+Any canonical sleeve-length wording or learned convention from the uniform name is subordinate to this block.
+Do not combine two sleeve lengths.
+Do not average between lengths.
+Preserve the selected MASTER's sleeve construction, cuff, lace and piping while changing length only.`;
+
+ if(eff==="short") return `${common}
+
+SELECTED EFFECTIVE LENGTH: SHORT.
+Both sleeves end around mid-upper arm, clearly above the elbow.
+The elbow remains fully visible.
+Never elbow-length, three-quarter, seven-eighth, bracelet-length or full-length sleeves.`;
+
+ if(eff==="three_quarter") return `${common}
+
+SELECTED EFFECTIVE LENGTH: EXACT THREE-QUARTER.
+Both sleeves extend clearly beyond the elbow and terminate at MID-FOREARM, approximately halfway between elbow and wrist.
+The cuff/trim ends at mid-forearm.
+A substantial and unmistakable section of lower bare forearm remains visible between the cuff and wrist.
+The white cuff must never approach the wrist.
+Never short, elbow-length, seven-eighth, bracelet-length, near-wrist or full-length sleeves.`;
+
+ return `${common}
+
+SELECTED EFFECTIVE LENGTH: LONG.
+Both sleeves extend continuously to the wrist and terminate exactly at the wrist joint.
+The cuff/trim ends at the wrist.
+The hand remains fully uncovered.
+Never short, elbow-length, three-quarter, seven-eighth or bracelet-length sleeves.`;
+}
+
+const SLEEVE_SHAPE_GLOBAL_LOCK=`SLEEVE SHAPE — GLOBAL WORKWEAR LOCK:
+Sleeve length and sleeve design are separate parameters.
+The EFFECTIVE SLEEVE CONFIGURATION determines length.
+The selected MASTER determines cuff, lace, piping and sleeve construction.
+Never introduce puff sleeves, balloon sleeves, bishop sleeves, leg-of-mutton sleeves, flared sleeves, oversized fashion sleeves or excessively tight sleeves.
+Season, activity, location, illustration style and body type never silently override the effective sleeve length.`;
+const STRAIGHT_WORK_SKIRT_LOCK=`STRAIGHT WORK-DRESS SKIRT SILHOUETTE — ABSOLUTE LOCK: Accommodate the character's actual hips without converting the skirt into an A-line silhouette. From the widest point of the hips downward, side seams descend almost vertically. Hem width is approximately equal to garment width at the widest hip area, with only minimal functional ease. BODY SHAPE ≠ GARMENT FLARE. Wide hips, pear-shaped anatomy or higher body weight change required hip width, not skirt flare. FORBIDDEN: A-line, evasé, fit-and-flare, skater, bell-shaped, trapeze, pronounced flare, wide sweeping hem or triangular lower silhouette. The dress hem crosses exactly the vertical midpoint of the kneecap.`;
+const APRON_STRAIGHT_FALL_LOCK=`APRON FALL — STRAIGHT WORKWEAR LOCK: For MASTER A, MASTER B, MASTER B COORDINATED and MASTER C, apron sides descend almost vertically from the waistband with only minimal functional widening. Never create a second A-line skirt. MASTER D ITALIAN EXCEPTION: preserve its canonical intentionally wider lower apron / subtle bulb-shaped lower contour. This exception applies to the apron only; the underlying dress remains straight.`;
+const DRESS_LENGTH_LOCK=`DRESS LENGTH — ABSOLUTE LOCK:
+When the wearer stands naturally, the dress hem ends exactly at the vertical midpoint of the kneecap. The hem covers only the upper 50% of the patella; the lower half of the kneecap remains visible. The hem is horizontal and equal at front, sides and back. Never above the kneecap, never below the kneecap, never midi, never mid-calf and never tea length.`;
+
+const MASTER_PHOTOREALISM_LOCK=`MASTER PHOTOREALISM AND MATERIAL PHYSICS LOCK:
+The result must look like an authentic photograph taken in a real private residence, not a CGI render or AI illustration.
+Use real woven cotton or cotton-polyester textile behaviour: visible fine weave, matte surface, believable fabric thickness, real stitched hems, seam tension, gravity, compression and layered contact shadows.
+The dress and coordinated apron must look cut from the exact same roll of fabric whenever the model requires coordinated fabric: identical weave, stripe scale, dye, ageing, softness, weight, drape and response to light.
+The apron is a separate physical layer. It must float subtly above the dress, compress under the waistband and create natural overlap shadows. Never fused, painted or printed onto the dress.
+Include small asymmetrical real-world imperfections: gentle wrinkles at elbows, waist, lower back and behind knees; softened edges from repeated washing; minor fabric memory and realistic fold variation.
+Lighting must be naturally uneven and physically believable, with soft contact shadows and different highlights on flat, folded and worn areas. Avoid excessive HDR, plastic smoothness, perfect symmetry and catalog-new surfaces.
+Skin must retain pores, age, fine lines and natural colour variation. Hair must contain individual strands and small flyaways. Hands must have age-appropriate knuckles, cuticles and veins.`;
+
+const DRESS_WEAR={
+WL0_NEW:`DRESS WEAR WL0 — NEW:
+The dress is genuinely new: crisp construction, saturated colour, sharp creases from first pressing and no wear, dirt, stains or moisture.`,
+WL1_CARED:`DRESS WEAR WL1 — VERY WELL CARED FOR:
+Clean and carefully ironed but not new. Slightly softened collar and cuffs, faint natural folds at elbows and waist, subtle evidence of repeated washing and no visible dirt.`,
+WL2_NORMAL:`DRESS WEAR WL2 — NORMAL WORKDAY:
+Clearly worn during a normal shift. Natural wrinkles at elbows, waist, lower back and behind knees; slightly softened fabric and very faint friction darkening at high-contact areas. Clean overall, but unmistakably used rather than pristine.`,
+WL3_USED:`DRESS WEAR WL3 — HEAVILY USED / WORN:
+Repeatedly washed and frequently worn. Noticeably softened weave, mild fading, persistent creases, slightly abraded cuff and pocket edges, relaxed collar structure and realistic fabric fatigue. Still serviceable and professionally maintained.`,
+WL4_DIRTY:`DRESS WEAR WL4 — WORK DIRTY:
+Visible restrained task-related dirt: fine dust, grey handling marks, subtle soil at lower skirt or knees, light detergent or cleaning-product traces. Dirt must correspond to the selected activity and never look randomly splattered.`,
+WL5_STAINED:`DRESS WEAR WL5 — VISIBLY STAINED:
+Several clearly readable but realistic work stains appropriate to the selected task: small food, coffee, grease, soap, starch, dust or cleaning-product marks. Stains vary in size, opacity and edge softness and follow gravity and contact.`,
+WL6_WET:`DRESS WEAR WL6 — DAMP / WET:
+Realistic damp areas caused by the activity. Fabric becomes slightly darker and heavier where wet, clings modestly without sexualization, forms gravity-led irregular edges and shows believable drying transitions. Never glossy plastic.`,
+WL7_INTENSE:`DRESS WEAR WL7 — INTENSE TASK:
+A coherent combination of heavy use, wrinkles, softened fabric, task-related dirt, several realistic stains and limited damp areas. Strongly worked-in but never theatrical, destroyed or costume-like.`
+};
+
+const APRON_WEAR={
+AL0_NEW:`APRON WEAR AL0 — NEW:
+Bright, crisp and newly pressed, with no marks or wear.`,
+AL1_CARED:`APRON WEAR AL1 — VERY WELL CARED FOR:
+Clean but previously used. Slight softening, small natural folds and minimal wash wear.`,
+AL2_NORMAL:`APRON WEAR AL2 — NORMAL WORKDAY:
+Visible everyday use: gentle creasing at waistband and lap, faint hand-contact marks, slight softening and subtle reduction of pristine whiteness.`,
+AL3_USED:`APRON WEAR AL3 — HEAVILY USED / WORN:
+Clearly washed many times. Softened body, relaxed edges, mild fading or off-white cast, persistent folds and subtle abrasion on binding, pockets and waistband.`,
+AL4_DIRTY:`APRON WEAR AL4 — WORK DIRTY:
+Task-related dirt is clearly visible but controlled: grey wiping marks, fine dust, soap residue, lower-edge grime or light food handling marks. Placement must follow the activity.`,
+AL5_STAINED:`APRON WEAR AL5 — VISIBLY STAINED:
+Multiple realistic stains on the most exposed zones—front panel, pocket area, waistband and lower edge. Use irregular, semi-transparent, absorbed textile stains rather than graphic painted spots.`,
+AL6_WET:`APRON WEAR AL6 — DAMP / WET:
+Irregular damp zones, slightly darker and heavier cotton, realistic moisture edges, subtle cling and small droplets only where the task supports them. No glossy waterproof look.`,
+AL7_INTENSE:`APRON WEAR AL7 — INTENSE TASK:
+Strong but believable combination of repeated-use softening, wrinkles, task dirt, absorbed stains and limited damp areas. The apron remains intact and functional.`
+};
+
+const SHOE_WEAR={
+SL0_NEW:`SHOE WEAR SL0 — NEW:
+Brand-new, uniform colour, pristine canvas and sole.`,
+SL1_CARED:`SHOE WEAR SL1 — LIGHTLY USED:
+Clean and carefully maintained, with faint flex creases and minimally dulled sole edges.`,
+SL2_DAILY:`SHOE WEAR SL2 — DAILY PROFESSIONAL USE:
+Clearly used every day but kept clean. Canvas is softened and subtly off-white, toe and vamp show natural flex creases, the sole edge has a light grey-beige patina and the wedge is matte rather than pristine.`,
+SL3_WORN:`SHOE WEAR SL3 — WELL WORN:
+Noticeable softening, repeated-wash fading, deeper but natural flex creases, modest scuffing at toe and heel and visible sole wear. Still safe, clean enough and professionally maintained.`,
+SL4_DIRTY:`SHOE WEAR SL4 — WORK DIRTY:
+Believable dust, faint floor grime and small task-related marks concentrated at toe, outer edge and sole. Never uniformly brown, destroyed or neglected.`,
+SL5_WET:`SHOE WEAR SL5 — DAMP / WET:
+Canvas is slightly darker in irregular damp zones; sole and floor contact may show restrained moisture. No glossy leather appearance and no puddle unless the scene requires it.`
+};
+
+const EYEWEAR_LOCKS={
+none:`EYEWEAR — ABSOLUTE NEGATIVE LOCK:
+The woman wears no glasses or eyewear of any kind.
+Do not add prescription glasses, reading glasses, sunglasses, protective eyewear or any object around the eyes.
+Her eyes, eyebrows, temples and bridge of the nose remain completely unobstructed.
+Do not infer glasses from age, profession, intelligence, facial structure or domestic-service conventions.`,
+
+reference:`EYEWEAR — REFERENCE-DEPENDENT LOCK:
+Preserve glasses only when they are clearly and visibly being worn in the uploaded identity reference image.
+If no glasses are clearly visible on the reference face, generate no glasses or eyewear of any kind.
+When glasses are visibly present, reproduce their exact frame shape, size, colour, thickness, lens proportions and position.
+Never invent, redesign, enlarge, modernize or substitute them.`,
+
+thin:`EYEWEAR — EXPLICITLY ADDED:
+The woman wears thin, discreet prescription glasses with restrained neutral frames.
+Keep the eyes clearly visible. Do not add sunglasses, protective eyewear or oversized fashion frames.`
+};
+
+
+const HAIRSTYLE_LOCKS={
+reference:`HAIRSTYLE:
+Preserve the hairstyle, hair length, density, texture, hairline and colour visible in the uploaded identity reference. Do not invent additional length or volume.`,
+loose:`HAIRSTYLE:
+Wear the hair loose and natural, preserving the character's real hair length, colour, texture and density.`,
+low_ponytail:`HAIRSTYLE:
+Gather the hair into one low ponytail at the nape. Preserve real hair length, colour, texture and density.`,
+mid_ponytail:`HAIRSTYLE:
+Gather the hair into one medium-height ponytail centered at the back of the head. Preserve real length and density.`,
+high_ponytail:`HAIRSTYLE:
+Gather the hair into one high ponytail. Preserve real length and density. No extensions.`,
+low_bun:`HAIRSTYLE:
+Gather the hair into one compact low bun or chignon at the nape. Keep it realistic for the character's actual hair length and density.`,
+mid_bun:`HAIRSTYLE:
+Gather the hair into one compact mid-height bun centered on the back of the head.`,
+high_bun:`HAIRSTYLE:
+Gather the hair into one compact high bun. No oversized fashion bun.`,
+formal_chignon:`HAIRSTYLE:
+Create a restrained formal chignon adapted strictly to the character's actual hair length, density and texture. No bridal styling.`,
+braid:`HAIRSTYLE:
+Arrange the hair in one practical braid using only the character's actual hair length and density.`,
+claw_clip:`HAIRSTYLE:
+Gather the hair practically with one simple claw clip. No oversized decorative clip.`,
+short_bob:`HAIRSTYLE:
+Use a neat short bob or naturally short hairstyle consistent with the uploaded reference. Do not invent a bun or ponytail if the hair is too short.`,
+pixie:`HAIRSTYLE:
+Use a short pixie hairstyle consistent with the character's actual hair growth, hairline, density and colour.`
+};
+
+const HEADWEAR_LOCKS={
+none:`HEADWEAR:
+No cap, coif, maid headpiece, hairnet, bonnet, headband or other headwear is worn.`,
+
+kitchen_mesh:`HEADWEAR A — BREATHABLE KITCHEN MESH CAP — ABSOLUTE LOCK:
+Professional hygienic hair-covering cap for domestic kitchen work and food handling inside a private residence.
+
+Exactly two components:
+1. one broad opaque matte-white fabric band across the forehead, approximately 5–7 cm high;
+2. one lightweight white breathable fine-mesh enclosure attached behind the band.
+
+The band lies flat near the natural hairline, never over the eyebrows and never like a narrow elastic strip.
+The mesh extends over crown, sides and rear, forming a soft protective pocket. It is semi-transparent, visibly perforated, flexible and slightly gathered. The ears remain predominantly visible.
+
+FULL HAIR CONTAINMENT — ABSOLUTE ZERO-EXPOSURE LOCK:
+When HEADWEAR A is selected, the cap must contain 100% of the character's hair without exception.
+ALL HAIR MUST BE INSIDE THE CAP.
+This includes all crown hair, side hair, rear hair, loose strands, fringe or bangs, ponytails, braids, buns, chignons, twists, pinned-up hair and the complete gathered hair mass.
+If the selected hairstyle is a ponytail, bun, chignon, braid or any other gathered hairstyle, that hairstyle exists ONLY UNDERNEATH AND INSIDE the mesh enclosure.
+The mesh enclosure must expand naturally at the rear to accommodate the real volume of the contained hairstyle. A bun, ponytail, braid or chignon may create a believable soft volume or bulge UNDER the mesh, but the hair itself must never protrude through, below, beside or behind the cap.
+
+ZERO VISIBLE HAIR OUTSIDE THE CAP:
+No hair may remain visible outside the perimeter of the kitchen cap.
+No exposed bun. No exposed chignon. No exposed ponytail. No exposed braid. No loose rear hair. No side locks. No strands at the nape. No hair emerging around the ears. No decorative hairstyle outside the mesh.
+The opaque forehead band plus the attached mesh enclosure together form one complete hygienic hair-containment system.
+The rear mesh MUST cover the entire gathered hairstyle down to its lowest point at the back of the head or nape.
+
+HAIRSTYLE DOES NOT OVERRIDE HYGIENE:
+The hairstyle parameter defines how the hair is arranged UNDER the cap only. It never authorizes any portion of that hairstyle to remain visible.
+If preserving the visible hairstyle conflicts with complete hygienic containment, COMPLETE HAIR CONTAINMENT ALWAYS TAKES PRIORITY.
+
+LOW BUN / CHIGNON SPECIAL CASE:
+A low bun or chignon must NEVER sit behind the mesh cap.
+The rear mesh enclosure extends backwards and downwards far enough to wrap completely around the lowest point of the bun or chignon.
+The mesh must visibly surround the gathered hair mass.
+The bun may create a rounded bulge UNDER the mesh, but no hair surface may remain directly visible.
+
+ABSOLUTE FAILURE CONDITION:
+Any visible ponytail, bun, chignon, braid, loose strand or other hair outside the kitchen mesh cap is an incorrect result and must not be rendered.
+
+Private-residence domestic workwear only. Never chef toque, nurse cap, plastic shower cap, elastic-only hairnet, bonnet, lace maid cap, ribbons or bow.`,
+
+formal_clean:`HEADWEAR B — FORMAL DOMESTIC SERVICE CAP — CLEAN VERSION — ABSOLUTE LOCK:
+Small structured white formal-service headpiece for private-household domestic service.
+Compact shallow curved white band / crescent positioned across crown and upper-rear head, never across forehead. It covers only a minority of the head and remains visually subordinate to the hairstyle.
+Plain opaque matte white fabric, no mesh, lace, ruffles, embroidery, ribbon or bow.
+Hair remains clearly visible. Any bun or chignon remains visible behind or below the cap. Short hair remains short; never invent a bun.
+Never nurse cap, chef cap, kitchen hairnet, bonnet, mob cap, Victorian cap, French-maid costume headpiece, fascinator, tiara or religious veil.`,
+
+formal_trim:`HEADWEAR B — FORMAL DOMESTIC SERVICE CAP — TRADITIONAL TRIM VERSION — ABSOLUTE LOCK:
+Same small structured formal-service cap geometry as the clean version: opaque matte white fabric, crown/upper-rear placement, never across forehead.
+Add exactly one restrained white edge treatment along the upper/rear perimeter: narrow cotton lace OR controlled pleating OR a very small gathered trim, maximum visible height 1.5–2.5 cm.
+Most hair remains visible. Bun/chignon remains visible when selected and physically possible.
+Never large ruffled halo, mesh, coloured ribbon, decorative flowers, large bow, Victorian bonnet, French-maid cosplay, nurse cap or chef cap.`
+};
+
+function hairHeadwearCompatibility(hair,headwear){
+ if(headwear==="none") return {level:"ok",text:""};
+ if(headwear==="kitchen_mesh"){
+   if(["high_bun","high_ponytail"].includes(hair)) return {level:"warn",text:"Compatibilitat mitjana: la cofia de cuina contindrà completament el pentinat i crearà més volum posterior."};
+   return {level:"ok",text:"Compatible: la cofia de cuina contindrà el 100% del cabell dins la reixeta."};
+ }
+ if(["formal_clean","formal_trim"].includes(headwear)){
+   if(["low_bun","mid_bun","formal_chignon"].includes(hair)) return {level:"ideal",text:"Compatibilitat ideal: la cofia formal s’adapta al recollit i el monyo/chignon continua visible."};
+   if(["high_bun","high_ponytail"].includes(hair)) return {level:"warn",text:"Compatibilitat baixa: el pentinat alt interfereix amb la cofia formal. Es conservarà el pentinat sense canvis silenciosos."};
+   if(["low_ponytail","mid_ponytail"].includes(hair)) return {level:"warn",text:"Compatible però menys formal: la cua es conserva i no es transforma automàticament en monyo."};
+   return {level:"ok",text:"Compatible: la cofia formal s’adapta al pentinat existent sense substituir-lo."};
+ }
+ return {level:"ok",text:""};
+}
+
+function headwearHairLock(){
+ const hair=V("hair"),headwear=V("headwear");
+ let relation=headwear==="kitchen_mesh"
+ ?`HAIRSTYLE × HEADWEAR RELATIONSHIP — KITCHEN CONTAINMENT OVERRIDE — ABSOLUTE:
+The selected hairstyle describes the hidden arrangement of the hair beneath the kitchen cap.
+When HEADWEAR A is active, the hairstyle must NEVER be interpreted as a visible hairstyle outside the cap.
+Examples:
+- selected ponytail = ponytail completely enclosed inside rear mesh;
+- selected low bun = low bun completely enclosed inside rear mesh;
+- selected mid-height bun = bun completely enclosed inside rear mesh;
+- selected chignon = chignon completely enclosed inside rear mesh;
+- selected braid = entire braid folded or gathered and completely enclosed inside rear mesh.
+The mesh changes its rear volume and shape to accommodate the hairstyle; the hairstyle never escapes the mesh.
+100% HAIR INSIDE.
+0% HAIR OUTSIDE.
+
+KITCHEN HYGIENE PRIORITY — HIGHEST HEADWEAR PRIORITY:
+1. Complete hygienic hair containment.
+2. Correct kitchen-cap construction.
+3. Realistic contained hair volume.
+4. Selected hidden hairstyle.
+If any lower-priority instruction conflicts with complete containment, 100% hair containment always wins.`
+ :(["formal_clean","formal_trim"].includes(headwear)
+ ?`HAIRSTYLE × HEADWEAR RELATIONSHIP — FORMAL SERVICE:
+Hairstyle and headwear are independent parameters. Preserve the selected hairstyle as far as physically possible. The formal cap sits on and adapts to the hairstyle; it does not contain the hair and does not automatically create a bun or chignon. Never invent longer hair.`
+ :`HAIRSTYLE × HEADWEAR RELATIONSHIP:
+Hairstyle is independent and no headwear is present.`);
+ return `${HAIRSTYLE_LOCKS[hair]}
+
+${HEADWEAR_LOCKS[headwear]}
+
+${relation}`;
+}
+
+function updateHairHeadwearStatus(){
+ const box=$("hairHeadwearStatus"); if(!box)return;
+ const c=hairHeadwearCompatibility(V("hair"),V("headwear"));
+ if(V("headwear")==="none"){box.style.display="none";return}
+ box.style.display="block"; box.textContent=c.text;
+ box.style.borderLeftColor=c.level==="warn"?"#b96b2c":c.level==="ideal"?"#2f6f5e":"#9b7a5c";
+}
+
+const COMPOSITION_VARIATION_LOCKS={
+conservative:`COMPOSITION VARIATION — CONSERVATIVE: Keep the selected shot and scene readable with restrained variation. Small changes in body orientation, subject placement and camera distance are allowed while preserving a stable catalog-friendly composition.`,
+natural:`COMPOSITION VARIATION — NATURAL: Do not reuse the same default standing pose, camera distance, body orientation or subject placement across different activities. Let the selected activity determine body orientation, torso inclination, arm position, hand placement, leg stance, gaze direction, working distance, subject placement and camera relationship. Vary naturally between frontal, three-quarter left, three-quarter right, side profile and partial rear views when compatible. Avoid repeatedly centering the maid or placing her in the same left-of-center position. The result should feel like a different real moment, not the same template with a different prop.`,
+high:`COMPOSITION VARIATION — HIGH: Strongly vary composition while keeping the selected activity fully readable. Actively vary subject placement, lateral orientation, foreground/background balance, camera distance and viewing direction. Use off-center documentary composition, side views, partial rear views, deeper environmental framing or closer working views as physically appropriate. Never repeat the same standing three-quarter pose merely because the uniform and character are unchanged.`
+};
+const BODY_ORIENTATION_LOCKS={
+auto:`BODY ORIENTATION: Derive body orientation from the selected activity and physical workspace. Choose the angle that makes the task most natural and readable rather than defaulting to a frontal or three-quarter portrait.`,
+front:`BODY ORIENTATION: Use a predominantly frontal body orientation while still performing the selected task naturally.`,
+three_quarter_left:`BODY ORIENTATION: Use a three-quarter-left body orientation, adapted realistically to the selected task.`,
+three_quarter_right:`BODY ORIENTATION: Use a three-quarter-right body orientation, adapted realistically to the selected task.`,
+left_profile:`BODY ORIENTATION: Use a clear left-side profile working orientation where physically plausible.`,
+right_profile:`BODY ORIENTATION: Use a clear right-side profile working orientation where physically plausible.`,
+partial_rear:`BODY ORIENTATION: Use a partial rear / three-quarter-back working orientation while preserving readable uniform construction and task mechanics.`
+};
+const BROOM_GRIP_LOCK=`BROOM GRIP — ABSOLUTE LOCK:
+When the selected activity involves sweeping the floor with a long-handled broom, the maid must hold the broom with a natural two-hand working grip.
+
+HAND POSITION:
+- One hand high on the broom handle, approximately at chest / sternum height.
+- The second hand clearly lower, approximately between waist and hip height.
+- The two hands visibly separated along the handle, normally approximately 30–50 cm according to body size and posture.
+- Never cluster both hands at the same point of the handle.
+
+ARM MECHANICS:
+Both arms work together naturally. The upper hand controls direction and stability; the lower hand guides the sweeping movement and applies force. Elbows remain naturally flexed. Wrists and fingers must be anatomically plausible. The lower hand wraps naturally around the handle and never twists impossibly.
+
+BROOM ORIENTATION AND MOTION:
+The long handle crosses the body diagonally during active sweeping. The broom head remains in contact with the floor. The action uses believable lateral or diagonal sweeping strokes and must read as ACTIVE SWEEPING, not standing while holding a broom.
+
+BODY POSTURE:
+The torso may incline slightly forward but remains balanced. No excessive crouching unless the task specifically requires reaching under low furniture. A slightly asymmetrical stance with one foot marginally forward is natural.
+
+FINAL BROOM MECHANICS CHECK:
+1. one hand high at chest/sternum level;
+2. one hand lower at waist/hip level;
+3. clear 30–50 cm separation;
+4. handle crosses body diagonally;
+5. broom head contacts floor;
+6. lower hand grips anatomically;
+7. body shows believable sweeping motion;
+8. hands are never bunched together.
+
+ABSOLUTE PROHIBITIONS:
+both hands together, hands touching each other on handle, both hands at same height, hands less than approximately 20 cm apart, one-handed broom grip during active sweeping, impossible wrist rotation, deformed lower hand, broom held like a staff or walking stick, perfectly vertical broom during sweeping, broom head floating above floor, static portrait pose with broom, exaggerated bending, awkward crossed arms.`;
+
+function broomMechanicsLock(){
+ const a=V("activity");
+ return (a && (a.includes("sweep") || a.includes("sweeping"))) ? BROOM_GRIP_LOCK : "";
+}
+
+const ACTIVITY_DRIVEN_COMPOSITION_LOCK=`ACTIVITY-DRIVEN COMPOSITION — ABSOLUTE LOCK: The selected activity must visibly alter the composition. Do not treat activity as a prop swap. Body mechanics, working distance, hand position, gaze, torso angle, leg stance and camera relationship must reflect the actual task. Different tasks should normally produce visibly different poses and framings. The rendering style changes how the scene is drawn or photographed, never what the body must physically do.`;
+const DOMESTIC_SERVICE_REALISM_OVERRIDE=`DOMESTIC SERVICE REALISM OVERRIDE: The visual style must never turn a working domestic employee into a fashion model posing for a campaign. When an activity is selected, she performs that activity with credible household body mechanics. No hand-on-hip fashion pose, runway stance, glamour posture or lookbook posing unless the selected scene is explicitly a catalog/character-sheet presentation. Uniform, body, age, task and household realism override generic fashion-illustration conventions.`;
+
+
+
+function masterCSleeveCheck(){
+ if(V("uniform")!=="C" || effectiveSleeveLength()!=="three_quarter") return "";
+ return `FINAL MASTER C THREE-QUARTER SLEEVE CHECK:
+1. elbow is covered;
+2. sleeve continues beyond elbow;
+3. broad white cuff with fine lace ends at mid-forearm;
+4. a substantial section of lower forearm remains clearly visible;
+5. wrist is fully uncovered;
+6. cuff never approaches the wrist.`;
+}
+
+function updateSleeveStatus(){
+ const box=$("sleeveStatus");
+ if(!box)return;
+ const master=V("uniform");
+ const canonical=CANONICAL_SLEEVE[master];
+ const effective=effectiveSleeveLength();
+ const labels={short:"curta",three_quarter:"3/4 exacta a mig avantbraç",long:"llarga fins al canell"};
+ const mode=V("sleeveLength")==="canonical" ? "canònica" : "override explícit";
+ box.textContent=`Màniga efectiva: ${labels[effective]} · MASTER ${master} · ${mode}. El prompt només emet aquesta longitud.`;
+}
+
+const POSTURE_LOCKS={
+automatic:`POSTURE:
+Use the natural posture physically required by the selected activity. Do not default to a static portrait when the task requires reaching, bending, walking, kneeling, carrying or sitting.`,
+
+classic_attention:`POSTURE — CLASSIC DOMESTIC-SERVICE ATTENTION STANCE:
+The maid stands upright in an elegant traditional service position.
+Her body is vertical, head upright and centered, shoulders level and relaxed, back straight and weight evenly distributed.
+Both hands are gently held together directly in front of the apron, centered just below the waistband over the lower abdomen.
+One hand may rest lightly over the other or the fingers may be naturally and loosely joined.
+Elbows remain relaxed and close to the torso.
+The complete apron front remains readable and unobstructed.
+Feet are close and parallel or turned outward only minimally.
+Expression is calm, neutral, attentive and professional.
+Never place the hands behind her back, inside pockets, on hips or crossed over the chest. Never use a fashion-model stance, military rigidity, clenched hands or slouched shoulders.`,
+
+discreet_courtesy_bow:`POSTURE — DISCREET COURTESY BOW:
+The maid performs a tiny, elegant and almost imperceptible gesture of courtesy.
+Both knees flex only very slightly, approximately 3–6 degrees.
+The torso remains almost vertical and inclines forward only approximately 2–4 degrees.
+The head lowers gently by approximately 3–5 degrees, with the gaze following naturally downward.
+The back stays straight, shoulders remain level and relaxed, heels remain fully on the floor and weight stays balanced.
+Both hands remain softly held together in front of the apron, centered just below the waistband.
+The apron hangs naturally with only minimal changes caused by the tiny knee flexion.
+The gesture must read as restrained household protocol, never theatrical submission.
+Never generate a deep bow, formal ballet curtsy, crossed legs, one leg extended behind, exaggerated knee bending, bent back, dramatic head lowering, excessive smile, caricature or submissive performance.`,
+
+standing_working:`POSTURE:
+Standing naturally while carrying out the selected task, with believable balance and activity-based hand placement.`,
+walking:`POSTURE:
+Walking naturally with a realistic stride, balanced arms and believable fabric movement.`,
+crouching:`POSTURE:
+Crouching naturally to reach a lower area, with safe balanced weight distribution and realistic knee and hip flexion.`,
+kneeling:`POSTURE:
+Kneeling naturally while working, with realistic contact, balance and garment folds.`,
+tiptoe:`POSTURE:
+Standing briefly on tiptoe to reach a high shelf, with heels lifted modestly and stable balance.`,
+seated:`POSTURE:
+Seated naturally while carrying out the selected task, with realistic garment compression and folds.`,
+bending:`POSTURE:
+Bending forward naturally from the hips as required by the task, without glamour posing or exaggerated curvature.`,
+carrying:`POSTURE:
+Carrying a realistic load with both hands, with believable arm tension, balance and weight distribution.`,
+partial_back:`POSTURE:
+A partial rear or three-quarter-back working view, while preserving readable uniform construction and natural activity.`
+};
+function fillLoc(){const s=$("location");s.innerHTML="";LOCATIONS.forEach(x=>s.add(new Option(x.label,x.value)));if(s.options.length&&!s.value)s.selectedIndex=0}
+function fillAct(keep=true){const loc=$("location"),act=$("activity");const old=act.value,arr=ACTIVITIES[loc.value]||[];act.innerHTML="";arr.forEach(x=>act.add(new Option(x.t,x.v)));if(keep&&[...act.options].some(o=>o.value===old)){act.value=old}else if(act.options.length){act.selectedIndex=0}else{$("status").textContent="No hi ha activitats per a aquesta localització."}}
+function bmi(){let h=+V("height")/100,w=+V("weight");return h?(w/(h*h)).toFixed(1):"unspecified"}
+function locLock(){
+ const inside={"supermarket groceries":"inside a supermarket","select fresh produce":"inside the produce section","check shopping list":"inside the relevant shop","compare product quality":"inside a shop","buy household supplies":"inside a supermarket household-supplies aisle","choose flowers":"inside a florist","buy pet food":"inside a pet shop","wait at checkout":"inside a supermarket checkout line","bakery pickup":"inside a bakery","go pharmacy":"inside a pharmacy","go florist":"inside a florist","go delicatessen":"inside a gourmet delicatessen","return online packages":"inside a post office or parcel counter","take dogs vet":"inside a veterinary clinic","take dogs groomer":"inside a dog groomer","dry cleaner delivery":"inside a dry cleaner","post office":"inside a post office"};
+ let e=inside[V("activity")]?` The scene occurs ${inside[V("activity")]}, never generically on the street.`:"";
+ if(V("location")==="staff_room")e+=" STAFF BEDROOM ABSOLUTE LOCATION LOCK: this is a small simple PRIVATE RESIDENTIAL BEDROOM for one or two live-in domestic employees inside a private home. Include one or two single beds, an ordinary WOODEN domestic wardrobe, a small desk or dressing table with chair, bedside table, basic lamp, and a window overlooking the rear courtyard/service patio/back of the property. Modest, functional, genuinely residential, with a few personal belongings. NO metal lockers, NO institutional changing-room furniture, NO industrial shelving, NO stacks of household towels or linen, NO laundry sorting station, NO cleaning-supply storage, NO hotel/factory/gym staff-room appearance. This is where the maid sleeps and keeps personal belongings.";
+ if(V("location")==="staff_bathroom")e+=" STAFF BATHROOM ABSOLUTE LOCATION LOCK: a small simple complete DOMESTIC bathroom for one or two live-in household employees: one standard toilet, one simple ceramic sink, one compact shower with plain enclosure or curtain, ordinary mirror, towel hooks/rail, one or two personal towels and a few everyday toiletries; modest residential finishes and limited storage. NO metal lockers, NO collective changing room, NO multiple shower cubicles, NO institutional sinks, NO laundry machinery, NO linen storage, NO cleaning-supply room, NO marble spa, luxury hotel or corporate-restroom appearance.";
+ return `Location: ${T("location")}. Activity: ${T("activity")}. Keep the activity in its correct location.${e}`
+}
+function fabricSpecificLock(){
+ const f=V("fabric");
+ if(f.includes("service matte satin"))return `SATIN MATTE MATERIAL LOCK: Render a real satin weave with a LOW, restrained, soft directional lustre. Highlights must appear as broad muted gradients along folds and curved surfaces, while most planes remain visually calm. The cloth must never read as plain matte cotton, but also never as glossy costume satin, silk charmeuse, wet fabric, plastic, vinyl or metallic textile.`;
+ if(f.includes("service ras satin"))return `RAS SATIN MATERIAL LOCK: Render a very smooth, tightly woven satin with an unmistakable elegant continuous sheen. Light must create clean elongated highlights and darker flowing troughs along folds. Lustre is clearly stronger than matte satin, but remains textile: never wet, mirror-like, metallic, plastic, vinyl or cheap costume satin. Preserve enough body for a service uniform rather than lingerie drape.`;
+ if(f.includes("service satin faille"))return `SATIN FAILLE MATERIAL LOCK: Render a refined satin-faced faille with subtle fine transverse ribs that remain visible at close and medium distance. Give the raised rib structure a controlled soft sheen and a slightly firmer structured drape. Never flatten it into plain satin and never exaggerate the ribs into corduroy.`;
+ return "";
+}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function escActivity(){return T("activity").replace(/^./,c=>c.toLowerCase())}
+function enActivity(){return V("activity").replace(/^./,c=>c.toLowerCase())}
+function locEN(){
+ const m={dining_room:"dining room",living_room:"living room",kitchen:"kitchen",library:"library",terrace:"terrace",service_corridor:"service corridor",master_suite:"principal bedroom",staff_room:"staff bedroom",master_bathroom:"principal bathroom",garden:"garden",laundry:"laundry room",pantry:"pantry",staircase:"staircase",dressing_room:"dressing room",breakfast_room:"breakfast room",rear_service_entrance:"rear service entrance",street_exterior:"outside the residence",lady_study:"lady's private study",staff_dining_room:"staff dining room",staff_bathroom:"staff bathroom",main_door:"main entrance",broom_closet:"cleaning cupboard",service_yard:"service yard"};
+ return m[V("location")]||"private residence";
+}
+function workerName(){return (V("name")||"").trim()}
+function names(){
+ const n=workerName();
+ return {es:n||"la trabajadora",en:n||"the housemaid",esCap:n||"La trabajadora",enCap:n||"The housemaid"};
+}
+function presenceKind(){
+ const p=V("presence");
+ if(p.includes("lady"))return "lady";
+ if(p.includes("housemaid"))return "maid";
+ if(p.includes("Coco"))return "dogs";
+ return "none";
+}
+function sceneSeed(){
+ return {n:names(),actES:escActivity(),actEN:enActivity(),locES:T("location").toLowerCase(),locEN:locEN(),uniformES:T("uniform").toLowerCase(),fabricES:T("fabric").toLowerCase(),presence:presenceKind()};
+}
+function addToLength(es,en,target){
+ const fillers=[
+  ["En una casa así, gran parte del trabajo consiste en anticiparse: dejar cada cosa preparada antes de que alguien tenga que pedirla y corregir los pequeños desajustes antes de que se conviertan en una interrupción.","In a house like this, much of the work consists of anticipating needs: leaving everything ready before anyone has to ask and correcting small irregularities before they become an interruption."],
+  ["Es una de esas tareas que casi nadie comenta cuando está bien hecha. Precisamente por eso exige atención: el resultado debe parecer sencillo aunque detrás haya tiempo, memoria y una sucesión de decisiones pequeñas.","It is one of those tasks that almost nobody comments on when it is done well. That is precisely why it demands attention: the result should look simple even when it rests on time, memory and a succession of small decisions."],
+  ["El oficio se reconoce en detalles mínimos: el orden de los gestos, la manera de no estorbar, la capacidad de observar la habitación mientras las manos continúan trabajando.","The profession reveals itself in tiny details: the order of the gestures, the ability not to get in the way, and the habit of observing the room while the hands continue working."]
+ ];
+ while(es.split(/\s+/).length < target-25){
+   const f=pick(fillers); es+="\n\n"+f[0]; en+="\n\n"+f[1];
+ }
+ return [es,en];
+}
+function generatedBilingualText(){
+ if(V("narrativeEnabled")==="no")return "Generador de text desactivat.";
+ const s=sceneSeed(), type=V("textType"), mode=V("narrativeMode"), target=parseInt(V("narrativeLength"))||200;
+ let es="",en="";
+ const ladyLineES=pick(["—¿Está listo? —preguntó la señora desde la otra parte de la habitación.","—Cuando termines eso, avísame —dijo la señora sin levantar la voz.","—Déjalo como estaba esta mañana —indicó la señora al pasar."]);
+ const ladyLineEN={"—¿Está listo? —preguntó la señora desde la otra parte de la habitación.":"“Is it ready?” the lady asked from the other side of the room.","—Cuando termines eso, avísame —dijo la señora sin levantar la voz.":"“Let me know when you’ve finished that,” the lady said quietly.","—Déjalo como estaba esta mañana —indicó la señora al pasar.":"“Leave it as it was this morning,” the lady said as she passed."}[ladyLineES];
+
+ if(type==="descriptive"){
+  es=`En ${s.locES}, ${s.n.es} está ocupada en ${s.actES}. La escena tiene la concentración tranquila de una tarea doméstica hecha sin prisa visible, aunque cada gesto responde a una rutina aprendida. El uniforme ${s.uniformES}, de ${s.fabricES}, no funciona como adorno: acompaña el movimiento y sitúa con claridad el carácter profesional del trabajo.\n\nLa habitación conserva el orden de una residencia privada habitada. Hay objetos que pertenecen a la vida cotidiana y otros que delatan el trabajo necesario para mantenerla. ${s.n.esCap} observa antes de continuar, corrige una posición, comprueba una superficie y vuelve a la tarea. Lo importante no es un gran acontecimiento, sino esa suma de decisiones pequeñas que hace que el espacio parezca naturalmente dispuesto.`;
+  en=`In the ${s.locEN}, ${s.n.en} is busy ${s.actEN}. The scene has the quiet concentration of domestic work performed without visible haste, although every gesture follows a learned routine. The uniform is not decorative: it moves with the task and clearly marks the professional nature of the work.\n\nThe room retains the order of an inhabited private residence. Some objects belong to everyday life, while others reveal the work required to maintain it. ${s.n.enCap} pauses to observe, corrects a position, checks a surface and returns to the task. What matters is not a dramatic event but the accumulation of small decisions that makes the room appear naturally arranged.`;
+ } else if(type==="documentary"){
+  es=`La escena muestra una parte poco espectacular del servicio doméstico: ${s.actES} en ${s.locES}. Es una tarea ordinaria, pero exige atención, memoria de las preferencias de la casa y conocimiento del orden de trabajo. ${s.n.esCap} no actúa como una figura decorativa; está trabajando dentro de una residencia privada y cada movimiento responde a una función concreta.\n\nEl uniforme permite identificar el rol profesional, mientras el estado de uso recuerda que la ropa de servicio participa físicamente en la jornada. La imagen también hace visible una relación desigual con el espacio: para quienes viven en la casa, la estancia es un lugar de uso; para quien trabaja en ella, es además una secuencia de superficies, objetos, tiempos y expectativas que deben ser gestionados.`;
+  en=`The scene shows an unspectacular part of domestic service: ${s.actEN} in the ${s.locEN}. It is an ordinary task, but it requires attention, memory of household preferences and knowledge of the correct working sequence. ${s.n.enCap} is not a decorative figure; she is working inside a private residence, and each movement has a practical purpose.\n\nThe uniform identifies the professional role, while its signs of use remind us that service clothing physically participates in the working day. The image also makes a different relationship with space visible: for the people who live in the house, the room is a place to use; for the person who works there, it is also a sequence of surfaces, objects, timings and expectations that must be managed.`;
+ } else if(type==="uniform_ad"){
+  es=`Pensado para el trabajo cotidiano en una residencia privada, este uniforme combina una presencia ordenada con una construcción práctica. El conjunto seleccionado utiliza ${s.fabricES} y está concebido para acompañar tareas como ${s.actES} sin convertir la ropa de servicio en una prenda de exhibición.\n\nLa silueta mantiene una lectura profesional y doméstica: líneas claras, movilidad suficiente y detalles fáciles de reconocer durante el servicio. El delantal protege las zonas de mayor contacto y permite que el vestido conserve una apariencia cuidada durante la jornada. La elección del tejido aporta carácter visual al conjunto y debe seguir siendo legible bajo la iluminación real de la casa. Es un uniforme pensado para trabajar: debe permitir agacharse, alcanzar, transportar y permanecer de pie con comodidad razonable, manteniendo al mismo tiempo una imagen coherente con el entorno residencial.`;
+  en=`Designed for everyday work in a private residence, this uniform combines an orderly appearance with practical construction. The selected ensemble uses the chosen service fabric and is intended to accompany tasks such as ${s.actEN} without turning service clothing into display wear.\n\nThe silhouette retains a professional domestic character: clear lines, sufficient mobility and details that remain easy to read during service. The apron protects the areas exposed to the greatest contact and helps the dress maintain a cared-for appearance through the working day. The fabric choice gives the ensemble its visual character and should remain legible under real household lighting. This is clothing designed for work: it should allow bending, reaching, carrying and standing with reasonable comfort while maintaining an appearance consistent with a private residential setting.`;
+ } else if(type==="dialogue"){
+  es=`${ladyLineES}\n\n${s.n.esCap} miró un instante lo que tenía entre manos antes de responder.\n\n—Sí, señora. Me falta muy poco.\n\n—No hace falta que quede perfecto.\n\n${s.n.esCap} sonrió apenas. Aquella frase siempre llegaba cuando ya llevaba varios minutos intentando que quedara precisamente perfecto.\n\n—De acuerdo.\n\nContinuó con ${s.actES}. Al cabo de un momento apareció otra trabajadora por la puerta.\n\n—¿Te queda mucho?\n\n—Según la señora, no tiene que quedar perfecto.\n\nLa otra miró el trabajo y después la miró a ella.\n\n—Entonces acabarás dentro de media hora.\n\n${s.n.esCap} soltó una risa breve.\n\n—Veinte minutos.\n\n—Eso dices siempre.\n\nNo era una discusión ni una queja seria. Era una de esas conversaciones pequeñas que acompañaban la jornada y que permitían decir, sin decirlo del todo, cuánto trabajo podía esconder una instrucción aparentemente sencilla.`;
+  en=`${ladyLineEN}\n\n${s.n.enCap} looked for a moment at what she was doing before answering.\n\n“Yes, madam. I’m nearly finished.”\n\n“It doesn’t have to be perfect.”\n\n${s.n.enCap} gave the faintest smile. That sentence always seemed to arrive after she had already spent several minutes trying to make it precisely perfect.\n\n“Of course.”\n\nShe continued ${s.actEN}. A moment later another worker appeared in the doorway.\n\n“Much left?”\n\n“According to madam, it doesn’t have to be perfect.”\n\nThe other woman looked at the work and then at her.\n\n“So you’ll be another half hour.”\n\n${s.n.enCap} laughed quietly.\n\n“Twenty minutes.”\n\n“That’s what you always say.”\n\nIt was neither an argument nor a serious complaint. It was one of those small conversations that accompany a working day and make it possible to say, without quite saying it, how much labour can hide behind an apparently simple instruction.`;
+ } else if(type==="reflection"){
+  es=`Mientras continúa con ${s.actES}, ${s.n.es} piensa que las tareas más sencillas son a menudo las que más cuesta explicar. Desde fuera parece un gesto breve: colocar, limpiar, revisar, dejar listo. Desde dentro hay que recordar cómo lo quiere la casa, qué se hizo ayer, qué puede esperar y qué conviene resolver antes de que alguien lo note.\n\nNo le molesta que el resultado pase desapercibido. De hecho, parte de su orgullo profesional está ahí. Cuando termina bien, nadie pregunta cuánto tiempo ha llevado. La habitación simplemente funciona. Aun así, hay días en que le gustaría que alguien viera el trabajo antes de ver únicamente el resultado.\n\nSe detiene un segundo, observa ${s.locES} y vuelve a empezar por el último detalle. No porque se lo hayan pedido, sino porque sabe que todavía no está como debe.`;
+  en=`As she continues ${s.actEN}, ${s.n.en} thinks that the simplest tasks are often the hardest to explain. From the outside they look brief: place something, clean it, check it, leave it ready. From the inside, she has to remember how the household prefers it, what was done yesterday, what can wait and what should be solved before anyone notices.\n\nShe does not mind when the result goes unnoticed. In fact, part of her professional pride lies there. When the work is done well, nobody asks how long it took. The room simply works. Even so, there are days when she wishes someone could see the labour before seeing only the result.\n\nShe pauses for a second, looks around the ${s.locEN}, and returns to the final detail. Not because anyone has asked her to, but because she knows it is not quite right yet.`;
+ } else if(type==="anecdote"){
+  es=`Todo empezó con ${s.actES}, una tarea que debía ocupar pocos minutos. ${s.n.esCap} había preparado lo necesario y estaba a punto de terminar cuando descubrió un pequeño problema que no estaba en la lista. Lo resolvió, volvió al trabajo y entonces apareció otro detalle.\n\nCuando una compañera pasó por ${s.locES}, la encontró todavía allí.\n\n—¿No habías empezado con eso hace rato?\n\n—Sí.\n\n—¿Y qué ha pasado?\n\n${s.n.esCap} miró alrededor.\n\n—La casa ha decidido colaborar.\n\nLa otra soltó una carcajada. Entre las dos acabaron de resolverlo y dejaron todo en orden. Más tarde, durante el descanso, la historia ya se había reducido a una frase y una exageración divertida. Era habitual: las pequeñas complicaciones desaparecían del resultado final, pero sobrevivían en las conversaciones del personal.`;
+  en=`It began with ${s.actEN}, a task that was supposed to take only a few minutes. ${s.n.enCap} had prepared everything she needed and was almost finished when she discovered a small problem that was not on the list. She solved it, returned to the task, and then another detail appeared.\n\nWhen a colleague passed through the ${s.locEN}, she found her still there.\n\n“Didn’t you start that ages ago?”\n\n“Yes.”\n\n“So what happened?”\n\n${s.n.enCap} looked around.\n\n“The house decided to help.”\n\nThe other woman laughed. Together they finished sorting it out and left everything in order. Later, during their break, the story had already been reduced to one sentence and a comic exaggeration. That was common: small complications disappeared from the finished result, but survived in staff conversations.`;
+ } else if(type==="professional"){
+  es=`${s.actES.charAt(0).toUpperCase()+s.actES.slice(1)} parece una tarea directa, pero ${s.n.es} la aborda como una secuencia. Primero observa el estado del espacio y reúne lo necesario; después trabaja de forma ordenada para no repetir movimientos ni ensuciar una zona ya terminada. Antes de marcharse hace una última comprobación desde cierta distancia.\n\nEse último vistazo forma parte del trabajo tanto como la tarea manual. Permite detectar una silla fuera de eje, una marca, un objeto olvidado o cualquier detalle que desde cerca pasa inadvertido. En ${s.locES}, además, debe trabajar sin alterar innecesariamente la vida de la casa. La eficacia no consiste solo en terminar rápido, sino en saber cuándo intervenir, qué dejar para después y cómo entregar la estancia preparada para su siguiente uso.`;
+  en=`${s.actEN.charAt(0).toUpperCase()+s.actEN.slice(1)} looks like a straightforward task, but ${s.n.en} approaches it as a sequence. First she assesses the space and gathers what she needs; then she works methodically so that she does not repeat movements or soil an area already finished. Before leaving, she makes one final check from a short distance.\n\nThat last look is as much a part of the job as the manual task itself. It can reveal a chair out of line, a mark, a forgotten object or any detail that disappears at close range. In the ${s.locEN}, she must also work without unnecessarily disturbing household life. Efficiency is not simply finishing quickly; it means knowing when to intervene, what can wait and how to leave the room ready for its next use.`;
+ } else if(type==="editorial"){
+  es=`Hay trabajos cuya eficacia se mide por su capacidad de desaparecer. En ${s.locES}, ${s.n.es} está dedicada a ${s.actES}; un gesto cotidiano que rara vez ocupa el centro de la imagen doméstica y, sin embargo, ayuda a construirla.\n\nEl uniforme hace visible una función que el resultado del trabajo tiende a volver invisible. Frente a una habitación ordenada solemos mirar los muebles, la luz o los objetos. Menos a menudo pensamos en la secuencia de decisiones que los ha colocado así. La escena habla precisamente de esa paradoja: presencia laboral e invisibilidad del trabajo terminado.\n\nNo hace falta convertir el servicio doméstico en ceremonia para observar su complejidad. Basta mirar el tiempo, la repetición, el conocimiento acumulado y la relación constante entre las preferencias de una casa y las manos que las convierten en rutina.`;
+  en=`Some forms of work measure their effectiveness by their ability to disappear. In the ${s.locEN}, ${s.n.en} is ${s.actEN}; an everyday gesture that rarely occupies the centre of the domestic image and yet helps to construct it.\n\nThe uniform makes visible a role that the finished work tends to render invisible. Faced with an orderly room, we usually notice the furniture, the light or the objects. Less often do we consider the sequence of decisions that placed them there. The scene speaks precisely to that paradox: the visible worker and the invisibility of completed labour.\n\nDomestic service does not need to be turned into ceremony for its complexity to become visible. It is enough to look at time, repetition, accumulated knowledge and the constant relationship between household preferences and the hands that turn them into routine.`;
+ } else {
+  let conflict = mode==="work_conflict" || s.presence==="lady";
+  es=`${s.n.esCap} llevaba unos minutos ${s.actES} cuando se detuvo para mirar el resultado desde cierta distancia. Había aprendido que, en ${s.locES}, los últimos detalles eran los que más fácilmente provocaban una segunda vuelta al trabajo.\n\n${conflict?ladyLineES:"No había nadie observándola, pero conocía de memoria las preferencias de la casa."}\n\n${conflict?"—Sí, señora —respondió.":"Corrigió un pequeño detalle y continuó."}\n\nNo era una tarea difícil. Lo complicado era hacerla en el momento adecuado, sin interrumpir a nadie y dejando la impresión de que todo había estado siempre así. ${s.n.esCap} terminó, recogió lo que había utilizado y volvió a mirar.\n\nPor un instante pensó en explicarle a una compañera el pequeño contratiempo de aquella mañana. Seguramente acabarían riéndose. Después decidió guardarlo para el descanso. Todavía quedaban varias cosas en la lista y la casa, como casi siempre, parecía tranquila precisamente porque alguien estaba pendiente de que lo estuviera.`;
+  en=`${s.n.enCap} had been ${s.actEN} for several minutes when she stopped to inspect the result from a short distance. She had learned that, in the ${s.locEN}, the final details were the ones most likely to send her back over the work a second time.\n\n${conflict?ladyLineEN:"Nobody was watching her, but she knew the household's preferences by heart."}\n\n${conflict?"“Yes, madam,” she replied.":"She corrected one small detail and continued."}\n\nIt was not a difficult task. The difficult part was doing it at the right moment, without interrupting anyone, and leaving the impression that everything had always been that way. ${s.n.enCap} finished, put away what she had used, and looked again.\n\nFor a moment she thought about telling a colleague about the morning's small complication. They would probably laugh about it. Then she decided to save it for the break. There were still several things on the list, and the house, as usual, seemed calm precisely because someone was paying attention to keeping it that way.`;
+ }
+ [es,en]=addToLength(es,en,target);
+ return `TEXTO — ESPAÑOL\n\n${es}\n\n==============================\n\nTEXT — ENGLISH\n\n${en}`;
+}
+function narrativePrompt(){return generatedBilingualText();}
+
+function generate(){
+ const p={balanced:"Balance identity, uniform and scene.",uniform:"Uniform construction is highest priority after identity.",identity:"Facial identity is highest priority.",scene:"Make location and activity especially clear."}[V("priority")];
+ let u=MODELS[V("uniform")]+(["B","BC"].includes(V("uniform"))?`\n\n${BIB}`:"");
+ let prompt=`Generate one image strictly following this specification.
+
+PRIORITY:
+${p}
+
+PRIMARY CHARACTER IDENTITY:
+The uploaded reference image is the sole and absolute identity source. Reproduce the same person. The reference face overrides every written description. Preserve facial geometry, age, wrinkles, asymmetry, moles and skin texture. Never invent, beautify, rejuvenate or replace the face.
+Name: ${V("name")||"not specified"}. Age: ${V("age")}. Expression: ${V("expression")}. Gaze: ${V("gaze")}. Makeup: ${V("makeup")}. Jewelry: ${V("jewelry")}.
+
+${EYEWEAR_LOCKS[V("glasses")]}
+
+${headwearHairLock()}
+
+BODY PROFILE LOCK:
+Height ${V("height")} cm. Weight ${V("weight")} kg. BMI ${bmi()}. Uniform size ${V("size")}. Build ${V("build")}. Shape ${V("shape")}. Measurements: bust ${V("bust")} cm, waist ${V("waist")} cm, hips ${V("hips")} cm. Fit ${V("fit")}.
+Never idealize or slim the body. Never reduce waist, enlarge breasts or hips, elongate legs or create fashion-model proportions. Natural posture, weight distribution, fabric tension and drape.
+
+UNIFORM:
+${u}
+
+${SLEEVE_DESIGN[V("uniform")]}
+${sleeveLengthLock()}
+${SLEEVE_SHAPE_GLOBAL_LOCK}
+${masterCSleeveCheck()}
+
+${STRAIGHT_WORK_SKIRT_LOCK}
+${APRON_STRAIGHT_FALL_LOCK}
+
+VARIABLE MATERIALS:
+Dress color: ${V("color")}. Fabric: ${V("fabric")}. General trim/band selection: ${V("trim")}. Shoes: ${V("shoes")}. Stockings: ${V("stockings")}.
+
+${fabricSpecificLock()}
+
+${DRESS_LENGTH_LOCK}
+
+${DRESS_WEAR[V("dressState")]}
+
+${APRON_WEAR[V("apronState")]}
+
+${SHOE_WEAR[V("shoeState")]}
+
+WEAR COHERENCE LOCK:
+Wear, dirt, stains and moisture must be physically integrated into the textile—not overlaid as graphic noise. Their type, location and intensity must be plausible for the selected location, activity, posture and time spent working. Repeated-use ageing, fresh dirt, absorbed stains and wetness are distinct phenomena and must remain visually distinct. White canvas footwear must not default to pristine optical white unless SL0 is explicitly selected.
+For Uniform D, ignore any conflicting generic trim selection: all apron bindings must always be made from the exact same selected dress fabric and color, while apron body, straps, waistband, bow, collar and cuffs remain white.
+The master model defines construction and overrides generic maid, nurse, hotel, restaurant and kitchen-apron conventions. Preserve collar, button count and spacing, waist-length placket, sleeves, apron type, pockets, straps, waistband, rear bow and relative lengths.
+
+${["photo","direct_flash"].includes(V("style"))?MASTER_PHOTOREALISM_LOCK:""}
+
+SCENE:
+${locLock()}
+${POSTURE_LOCKS[V("posture")]}
+${BODY_ORIENTATION_LOCKS[V("bodyOrientation")]}
+
+Secondary presence: ${V("presence")}. Make the activity visually readable and preserve natural body mechanics.
+
+${ACTIVITY_DRIVEN_COMPOSITION_LOCK}
+
+${broomMechanicsLock()}
+
+${COMPOSITION_VARIATION_LOCKS[V("compositionVariation")]}
+
+CAMERA:
+Shot ${V("shot")}. Format ${V("format")}. Angle ${V("angle")}. Lens ${V("lens")}. Lighting ${V("light")}. Composition ${V("composition")}.
+
+${STYLE[V("style")]}
+
+${DOMESTIC_SERVICE_REALISM_OVERRIDE}
+
+NEGATIVE PROMPT:
+wrong person, altered identity, beautified face, younger face, fashion-model body, glamour pose, sexualized maid, fetishwear, cosplay, mini skirt, loafers, sneakers, bare feet, wrong apron, missing apron, curved bib, anatomical bib, hourglass bib, white apron, grey apron, ivory apron, cream apron, contrasting apron, white straps or white waistband on coordinated B, differently woven coordinated apron, dress pleat below Italian apron, apron pockets on Italian D, thin Italian binding, non-concentric Italian binding, filled white chest opening, too many visible buttons on Italian D, wrong button count, uneven buttons, compressed button spacing, three tightly clustered buttons above a bib, dress button printed or placed on apron bib surface, five buttons on formal service uniform, full-length placket, blazer lapels, hotel uniform, nurse uniform, restaurant uniform, commercial building instead of private residence, luxury staff bathroom, text, watermark, logo, malformed hands, extra fingers, extra limbs, pristine brand-new shoes when a used state is selected, optical-white untouched canvas, fake painted stains, evenly distributed dirt, random splatter, plastic wet fabric, CGI textile, perfectly wrinkle-free worn uniform, dress and coordinated apron made from visibly different fabrics, unrequested glasses, invented glasses, reading glasses, sunglasses, protective eyewear, unrequested headwear, wrong headwear type, kitchen hairnet when formal cap selected, formal maid cap when kitchen mesh selected, hair escaping kitchen mesh cap, exposed hair outside kitchen cap, visible hair outside kitchen mesh, exposed bun, bun outside hairnet, bun outside kitchen mesh, exposed chignon, chignon outside hairnet, exposed ponytail, ponytail outside hairnet, ponytail outside kitchen mesh, exposed braid, braid outside hairnet, loose hair at nape, hair emerging below mesh, hair emerging behind mesh, hair emerging around ears, partially contained hairstyle, decorative bun outside kitchen cap, mesh cap sitting in front of exposed bun, loose hair outside kitchen mesh, formal cap covering forehead, formal cap hiding hairstyle, nurse cap, chef toque, shower cap, oversized Victorian maid cap, repeated identical pose across different activities, repeated identical camera framing, same default three-quarter standing template, fashion-model pose during household work, hands together on broom handle, clustered broom grip, both hands at same height on broom, impossible lower-hand grip, twisted wrist gripping broom, vertical static broom, broom held like a walking stick, broom head not touching floor, posing with broom instead of sweeping.`;
+ $("output").value=prompt;$("narrativeOutput").value=narrativePrompt();updateHairHeadwearStatus();updateSleeveStatus();$("status").textContent=`Prompts generats · imatge ${prompt.length.toLocaleString("ca-ES")} caràcters · text bilingüe generat ${$("narrativeOutput").value.length.toLocaleString("ca-ES")} caràcters`;save()
+}
+function rand(id){let s=$(id);s.selectedIndex=Math.floor(Math.random()*s.options.length)}
+function randomScene(){["location","posture","presence","shot","format","angle","lens","light","composition","compositionVariation","bodyOrientation"].forEach(rand);fillAct(false);rand("activity");generate()}
+function randomLook(){["uniform","sleeveLength","color","fabric","trim","dressState","apronState","shoes","shoeState","stockings","hair","headwear","expression","gaze","glasses"].forEach(rand);generate()}
+function getFormState(){
+ const d={};
+ document.querySelectorAll("select,input").forEach(e=>{
+   if(!e.id || ["presetName","presetSelect","presetFile"].includes(e.id)) return;
+   d[e.id]=e.type==="checkbox"?e.checked:e.value;
+ });
+ return d;
+}
+function applyFormState(d){
+ if(!d||typeof d!=="object")return;
+ if(d.location && $("location")) $("location").value=d.location;
+ fillAct(false);
+ Object.entries(d).forEach(([k,v])=>{
+   const e=$(k); if(!e || ["location","activity"].includes(k))return;
+   if(e.type==="checkbox")e.checked=Boolean(v);
+   else if([...e.options||[]].some(o=>o.value===String(v)) || !e.options)e.value=v;
+ });
+ if(d.activity && [...$("activity").options].some(o=>o.value===d.activity))$("activity").value=d.activity;
+ generate();
+}
+function save(){
+ localStorage.setItem("criades_v7_current",JSON.stringify(getFormState()));
+}
+function load(){
+ try{
+   const d=JSON.parse(localStorage.getItem("criades_v7_current")||localStorage.getItem("criades_v7")||"null");
+   if(d)applyFormState(d);
+ }catch(e){}
+}
+function getPresets(){
+ try{return JSON.parse(localStorage.getItem("criades_v7_presets")||"{}")||{}}catch(e){return{}}
+}
+function setPresets(p){
+ localStorage.setItem("criades_v7_presets",JSON.stringify(p));
+ refreshPresetSelect();
+}
+function refreshPresetSelect(selected=""){
+ const s=$("presetSelect"),p=getPresets(),names=Object.keys(p).sort((a,b)=>a.localeCompare(b,"ca"));
+ s.innerHTML='<option value="">— Cap preset seleccionat —</option>';
+ names.forEach(name=>s.add(new Option(name,name)));
+ if(selected&&p[selected])s.value=selected;
+}
+function savePreset(){
+ const name=$("presetName").value.trim();
+ if(!name){$("status").textContent="Escriu un nom per al preset.";return}
+ const p=getPresets();
+ if(p[name]&&!confirm(`El preset “${name}” ja existeix. El vols substituir?`))return;
+ p[name]={savedAt:new Date().toISOString(),state:getFormState()};
+ setPresets(p);$("presetSelect").value=name;$("status").textContent=`Preset “${name}” guardat.`;
+}
+function loadPreset(){
+ const name=$("presetSelect").value,p=getPresets();
+ if(!name||!p[name]){$("status").textContent="Selecciona un preset.";return}
+ $("presetName").value=name;applyFormState(p[name].state);$("status").textContent=`Preset “${name}” carregat.`;
+}
+function updatePreset(){
+ const selected=$("presetSelect").value;
+ const name=($("presetName").value.trim()||selected);
+ if(!name){$("status").textContent="Selecciona o escriu un preset.";return}
+ const p=getPresets();
+ if(selected&&selected!==name)delete p[selected];
+ p[name]={savedAt:new Date().toISOString(),state:getFormState()};
+ setPresets(p);$("presetSelect").value=name;$("presetName").value=name;$("status").textContent=`Preset “${name}” actualitzat.`;
+}
+function deletePreset(){
+ const name=$("presetSelect").value,p=getPresets();
+ if(!name||!p[name]){$("status").textContent="Selecciona un preset.";return}
+ if(!confirm(`Eliminar el preset “${name}”?`))return;
+ delete p[name];setPresets(p);$("presetName").value="";$("status").textContent=`Preset “${name}” eliminat.`;
+}
+function exportPresets(){
+ const p=getPresets(),blob=new Blob([JSON.stringify({app:"Prompt Master Criades",version:"7.0.11",exportedAt:new Date().toISOString(),presets:p},null,2)],{type:"application/json;charset=utf-8"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="presets_prompt_master_criades_v7_0_12.json";a.click();URL.revokeObjectURL(a.href);
+ $("status").textContent=`${Object.keys(p).length} presets exportats.`;
+}
+function importPresetsFile(file){
+ const reader=new FileReader();
+ reader.onload=()=>{
+   try{
+     const data=JSON.parse(reader.result),incoming=data.presets||data;
+     if(!incoming||typeof incoming!=="object")throw new Error("format");
+     const merged={...getPresets(),...incoming};setPresets(merged);
+     $("status").textContent=`Presets importats. Total: ${Object.keys(merged).length}.`;
+   }catch(e){$("status").textContent="No s’ha pogut importar el fitxer JSON."}
+ };
+ reader.readAsText(file);
+}
+function copyTextValue(value,label){navigator.clipboard.writeText(value).then(()=>$("status").textContent=label).catch(()=>{$("status").textContent="No s’ha pogut copiar automàticament.";})}
+function copyPrompt(){copyTextValue($("output").value,"Prompt d’imatge copiat.")}
+function copyNarrative(){copyTextValue($("narrativeOutput").value,"Text bilingüe copiat.")}
+function copyAll(){copyTextValue(`IMAGE PROMPT\n\n${$("output").value}\n\n==============================\n\nBILINGUAL GENERATED TEXT\n\n${$("narrativeOutput").value}`,"Paquet complet copiat.")}
+function downloadTxt(){let all=`IMAGE PROMPT\n\n${$("output").value}\n\n==============================\n\nBILINGUAL GENERATED TEXT\n\n${$("narrativeOutput").value}`;let b=new Blob([all],{type:"text/plain;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="prompt_criades_v7_1_1.txt";a.click();URL.revokeObjectURL(a.href)}
+fillLoc();fillAct(true);load();refreshPresetSelect();$("location").onchange=()=>{fillAct(false);generate()};
+$("uniform").addEventListener("change",()=>{
+ if(V("uniform")==="D"){
+   $("fabric").selectedIndex=0;
+   $("shoes").selectedIndex=0;
+ }
+ updateSleeveStatus();
+ generate();
+});document.querySelectorAll("select,input").forEach(e=>{if(!["location","uniform","sleeveLength","hair","headwear","presetName","presetSelect","presetFile"].includes(e.id))e.onchange=generate});
+$("sleeveLength").addEventListener("change",()=>{updateSleeveStatus();generate()});
+$("hair").addEventListener("change",()=>{updateHairHeadwearStatus();generate()});
+$("headwear").addEventListener("change",()=>{updateHairHeadwearStatus();generate()});
+$("generate").onclick=generate;
+$("randomScene").onclick=randomScene;
+$("randomLook").onclick=randomLook;
+$("copy").onclick=copyPrompt;
+$("copyNarrative").onclick=copyNarrative;
+$("copyAll").onclick=copyAll;
+$("txt").onclick=downloadTxt;
+$("savePreset").onclick=savePreset;
+$("loadPreset").onclick=loadPreset;
+$("updatePreset").onclick=updatePreset;
+$("deletePreset").onclick=deletePreset;
+$("exportPresets").onclick=exportPresets;
+$("importPresets").onclick=()=>$("presetFile").click();
+$("presetFile").onchange=e=>{const f=e.target.files&&e.target.files[0];if(f)importPresetsFile(f);e.target.value=""};
+$("presetSelect").onchange=()=>{if($("presetSelect").value)$("presetName").value=$("presetSelect").value};
+$("reset").onclick=()=>{if(confirm("Reiniciar els camps actuals? Els presets guardats es conservaran.")){localStorage.removeItem("criades_v7_current");localStorage.removeItem("criades_v7");window.location.reload()}};
+updateHairHeadwearStatus();updateSleeveStatus();generate();
+</script></body></html>
